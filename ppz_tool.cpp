@@ -46,6 +46,7 @@ int main(){
 
   SatGenerator * satgen = new SatGenerator(n, k, nsat, assignments);
   CNFFormula f = satgen->generate_sat();
+  f.bruteforce_solve_sat();
   cout << f;
   Ppz * ppz = new Ppz(&f);
   ppz->solve_ppz();

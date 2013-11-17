@@ -33,6 +33,7 @@ void CNFFormula::bruteforce_solve_sat(){
       }
     } while(std::prev_permutation(bitstring.begin(), bitstring.end()));
   }
+  was_solved = true;
 }
 
 /** checks whether a bitstring solves a CNF formula
@@ -63,6 +64,17 @@ std::ostream& operator<<(std::ostream& out, const CNFFormula & formula){
       out << "x" << literal.variable+1 << ",";
     }
     out << std::endl;
+  }
+  if(formula.was_solved){
+    out << "Assignments:" << std::endl;
+    for(const auto & assig:formula.satisfying_assignments){
+      int var = 1;
+      for(const auto & lit : assig){
+        out << "x" << var << "=" << lit << ",";
+        var++;
+      }
+      out << std::endl;
+    }
   }
   return out;
 }
