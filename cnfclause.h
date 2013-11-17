@@ -21,6 +21,8 @@ class CNFClause{
     const_iterator begin() const;
     iterator end();
     const_iterator end() const;
+    literal getliteral(int pos) const;
+    unsigned int size() const;
 };
 
 #endif

@@ -1,5 +1,6 @@
 #include "satgenerator.h"
 #include "cnfformula.h"
+#include "ppz.h"
 
 int main(){
   using namespace std;
@@ -46,4 +47,7 @@ int main(){
   SatGenerator * satgen = new SatGenerator(n, k, nsat, assignments);
   CNFFormula f = satgen->generate_sat();
   cout << f;
+  Ppz * ppz = new Ppz(&f);
+  ppz->solve_ppz();
+  cout << *ppz;
 }

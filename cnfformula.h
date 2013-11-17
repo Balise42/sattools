@@ -9,9 +9,9 @@
 class CNFFormula{
   private:
     /** number of variables */
-    int n;
+    unsigned int n;
     /** max number of literals in a clause ("k-SAT") */
-    int k;
+    unsigned int k;
     /** clauses of the formula */
     std::vector<CNFClause> clauses;
     /** indicates if the bruteforce_solve_sat method has been executed on the formula */
@@ -24,11 +24,16 @@ class CNFFormula{
     std::vector<assignment> satisfying_assignments;
 
   public:
-    CNFFormula(int n, int k, const std::vector<CNFClause> & clauses = std::vector<CNFClause>(0), const std::vector<assignment> assignments  = std::vector<assignment>(0));
+    CNFFormula(unsigned int n, int k, const std::vector<CNFClause> & clauses = std::vector<CNFClause>(0), const std::vector<assignment> assignments  = std::vector<assignment>(0));
     void bruteforce_solve_sat();
     bool check_bitstring(const std::vector<short> & bitstring) const;
     void add_clause(const CNFClause & clause);
     friend std::ostream& operator<<(std::ostream& out, const CNFFormula & formula);
+    CNFFormula make_assignment(const assignment & assg) const;
+    unsigned int get_n() const;
+    bool is_unsat() const;
+    int get_forced_value(int variable) const;
+    int get_m() const;
 };
 
 #endif

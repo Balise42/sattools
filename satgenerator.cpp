@@ -7,7 +7,7 @@
     @param k number of literals in the generated clauses 
     @param nsat number of satisfying assignments
     @param assignments the satisfying assignments for which we want a formula */
-SatGenerator::SatGenerator(int n, int k, int nsat, const std::vector<assignment> & assignments):n(n), k(k), nsat(nsat), assignments(assignments), formula(new CNFFormula(n, k)){
+SatGenerator::SatGenerator(unsigned int n, unsigned int k, unsigned int nsat, const std::vector<assignment> & assignments):n(n), k(k), nsat(nsat), assignments(assignments), formula(new CNFFormula(n, k)){
 }
 
 SatGenerator::~SatGenerator(){

@@ -1,10 +1,12 @@
 #include <vector>
 #include <algorithm>
 #include <iostream>
+#include <cassert>
 #include "cnfformula.h"
+#include "structs.h"
 
 /** creates a CNF formula with the given clauses and assignments, with default empty clause and empty assignment vectors */
-CNFFormula::CNFFormula(int n, int k, const std::vector<CNFClause> & clauses, const std::vector<assignment> assignments):n(n), k(k), clauses(clauses),unchecked_assignments(assignments){
+CNFFormula::CNFFormula(unsigned int n, int k, const std::vector<CNFClause> & clauses, const std::vector<assignment> assignments):n(n), k(k), clauses(clauses),unchecked_assignments(assignments){
 }
 
 /** solves a CNF formula by brute force - going to all 2^n assignments.
@@ -20,9 +22,9 @@ void CNFFormula::bruteforce_solve_sat(){
   std::vector<short> bitstring;
   //we enumerate all the bitstrings by taking all permutations of strings
   //that have i bits to 1
-  for(int i = 0; i<=n; i++){
+  for(unsigned int i = 0; i<=n; i++){
     bitstring = std::vector<short>(n, 0);
-    for(int j = 0; j<i; j++){
+    for(unsigned int j = 0; j<i; j++){
       bitstring[j] = 1;
     }
     do {
@@ -63,4 +65,71 @@ std::ostream& operator<<(std::ostream& out, const CNFFormula & formula){
     out << std::endl;
   }
   return out;
+}
+
+/** does the assignment passed in parameter, does not modify the current formula 
+    @param assg the assignment to make - 0 or 1 to corresponding variables, -1 for unassigned variables
+    @ return a new CNFFormula with the assignment made */
+CNFFormula CNFFormula::make_assignment(const assignment & assg) const {
+//  assert(assg.size() == n);
+  CNFFormula formula(n, k);
+  for(const auto & clause : clauses){
+    bool addit = true;
+    for(const auto & lit : clause){
+      //if the variable is not set in the assignment then nothing changes
+      if(assg[lit.variable] == -1){
+        continue;
+      }
+      // if a literal has the right value then the clause is satisfied and we do not add it
+      if(lit.value == assg[lit.variable]){
+        addit = false;
+        continue;
+      }
+      //otherwise we create a new clause without the (unsatisfied) literal and we add it
+      //(but not the original clause)
+      else{
+        CNFClause newclause;
+        for(auto lit1 : clause){
+          if(lit1.variable != lit.variable){
+            newclause.add_literal(lit1);
+          }
+        }
+        formula.add_clause(newclause);
+        addit = false;
+      }
+    }
+    //if we still need to add that clause then we do it
+    if(addit){
+      formula.add_clause(clause);
+    }
+  }
+  return formula;
+}
+
+unsigned int CNFFormula::get_n() const{
+  return n;
+}
+
+bool CNFFormula::is_unsat() const{
+  for(auto const & clause : clauses){
+    if(clause.size() == 0){
+      return true;
+    }
+  }
+  return false;
+}
+
+int CNFFormula::get_forced_value(int variable) const{
+  for(auto const & clause : clauses){
+    if(clause.size() == 1){
+      if(clause.getliteral(0).variable == variable){
+        return clause.getliteral(0).value;
+      }
+    }
+  }
+  return -1;
+}
+
+int CNFFormula::get_m() const{
+  return clauses.size();
 }

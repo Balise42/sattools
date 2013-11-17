@@ -10,11 +10,11 @@
 class SatGenerator{
   private:
     /** number of variables */
-    const int n;
+    const unsigned int n;
     /** max number of literals in a clause ("k-SAT") */
-    const int k;
+    const unsigned int k;
     /** number of satisfying assignments */
-    const int nsat;
+    const unsigned int nsat;
     /** satisfying assignments */
     const std::vector<assignment> assignments;
     /** resulting formula */
@@ -23,7 +23,7 @@ class SatGenerator{
     std::vector<CNFClause> generate_clauses(const std::vector<short> & permutation, int start=0);
     bool check_clause(const CNFClause & clause);
   public:
-    SatGenerator(int n, int k, int nsat, const std::vector<assignment> & assignments);
+    SatGenerator(unsigned int n, unsigned int k, unsigned int nsat, const std::vector<assignment> & assignments);
     ~SatGenerator();
     CNFFormula generate_sat();
 };

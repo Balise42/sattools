@@ -34,18 +34,30 @@ bool CNFClause::check_bitstring(const std::vector<short> & bitstring) const {
   return ok;
 }
 
+/** begin iterator over the clauses of the formula */
 CNFClause::iterator CNFClause::begin(){
   return clause.begin();
 }
 
+/** begin iterator over the clauses of the formula */
 CNFClause::const_iterator CNFClause::begin() const{
   return clause.begin();
 }
 
+/** end iterator over the clauses of the formula */
 CNFClause::iterator CNFClause::end(){
   return clause.end();
 }
 
+/** end iterator over the clauses of the formula */
 CNFClause::const_iterator CNFClause::end() const{
   return clause.end();
+}
+
+literal CNFClause::getliteral(int pos) const{
+  return clause[pos];
+}
+
+unsigned int CNFClause::size() const{
+  return clause.size();
 }
