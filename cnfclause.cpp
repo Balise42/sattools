@@ -33,3 +33,19 @@ bool CNFClause::check_bitstring(const std::vector<short> & bitstring) const {
   }
   return ok;
 }
+
+CNFClause::iterator CNFClause::begin(){
+  return clause.begin();
+}
+
+CNFClause::const_iterator CNFClause::begin() const{
+  return clause.begin();
+}
+
+CNFClause::iterator CNFClause::end(){
+  return clause.end();
+}
+
+CNFClause::const_iterator CNFClause::end() const{
+  return clause.end();
+}

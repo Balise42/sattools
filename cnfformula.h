@@ -1,6 +1,7 @@
 #ifndef CNFFORMULA_H
 #define CNFFORMULA_H 1
 
+#include <iostream>
 #include <vector>
 #include "cnfclause.h"
 
@@ -27,6 +28,7 @@ class CNFFormula{
     void bruteforce_solve_sat();
     bool check_bitstring(const std::vector<short> & bitstring) const;
     void add_clause(const CNFClause & clause);
+    friend std::ostream& operator<<(std::ostream& out, const CNFFormula & formula);
 };
 
 #endif

@@ -1,5 +1,6 @@
 #include <vector>
 #include <algorithm>
+#include <iostream>
 #include "cnfformula.h"
 
 /** creates a CNF formula with the given clauses and assignments, with default empty clause and empty assignment vectors */
@@ -35,7 +36,7 @@ void CNFFormula::bruteforce_solve_sat(){
 /** checks whether a bitstring solves a CNF formula
     @param bitstring the candidate bit string
     @return true if the bitstring satisfies the formula, false otw */
-bool CNFFormula::check_bitstring(std::vector<short> & bitstring) const {
+bool CNFFormula::check_bitstring(const std::vector<short> & bitstring) const {
   for(const auto & clause : clauses){
     if(!clause.check_bitstring(bitstring)){
       return false;
@@ -49,4 +50,17 @@ bool CNFFormula::check_bitstring(std::vector<short> & bitstring) const {
 
 void CNFFormula::add_clause(const CNFClause & clause){
   clauses.push_back(clause);
+}
+
+std::ostream& operator<<(std::ostream& out, const CNFFormula & formula){
+  for(const auto & clause : formula.clauses){
+    for(const auto & literal : clause){
+      if(literal.value == 0){
+        out << "~";
+      }
+      out << "x" << literal.variable+1 << ",";
+    }
+    out << std::endl;
+  }
+  return out;
 }
