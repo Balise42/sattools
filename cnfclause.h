@@ -1,5 +1,8 @@
+#ifndef CLAUSE_H
+#define CLAUSE_H 1
+
 #include <vector>
-#include "literal.h"
+#include "structs.h"
 
 /** CNF clause (disjunction of literals) */
 class CNFClause{
@@ -8,8 +11,9 @@ class CNFClause{
 
   public:
     CNFClause();
-    
     CNFClause(const std::vector<literal> & clause);
-
     bool add_literal(literal l);
+    bool check_bitstring(const std::vector<short> & bitstring) const;
 };
+
+#endif

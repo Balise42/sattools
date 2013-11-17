@@ -1,5 +1,5 @@
 #include <vector>
-#include "clause.h"
+#include "cnfclause.h"
 
 ///creates an empty clause
 CNFClause::CNFClause() : clause(std::vector<literal>(0)) {
@@ -21,4 +21,15 @@ bool CNFClause::add_literal(literal l){
   }
   clause.push_back(l);
   return true;
+}
+
+///checks whether a given bitstring/assignment satisfies the clause
+///@param the bitstring to check
+///@return true if the bitstring satisfies the clause, false otw
+bool CNFClause::check_bitstring(const std::vector<short> & bitstring) const {
+  bool ok = false;
+  for(const auto & lit : clause){
+    ok = ok || (lit.value == bitstring[lit.variable]);
+  }
+  return ok;
 }
