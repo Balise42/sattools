@@ -25,7 +25,7 @@ class CNFFormula{
 
   public:
     CNFFormula(unsigned int n, int k, const std::vector<CNFClause> & clauses = std::vector<CNFClause>(0), const std::vector<assignment> assignments  = std::vector<assignment>(0));
-    void bruteforce_solve_sat();
+    void bruteforce_solve_sat(std::vector<short> partial = std::vector<short>(0));
     bool check_bitstring(const std::vector<short> & bitstring) const;
     void add_clause(const CNFClause & clause);
     friend std::ostream& operator<<(std::ostream& out, const CNFFormula & formula);
@@ -34,6 +34,7 @@ class CNFFormula{
     bool is_unsat() const;
     int get_forced_value(int variable) const;
     int get_m() const;
+    bool is_frozen(int variable, std::vector<short> partial);
 };
 
 #endif

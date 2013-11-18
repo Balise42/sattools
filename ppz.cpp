@@ -5,12 +5,20 @@
 #include "structs.h"
 #include "ppz.h"
 
-Ppz::Ppz(CNFFormula * formula):formula(formula),assignments(std::vector<assignment>(0)),all_cases(0),satisfying_cases(0){
+Ppz::Ppz(CNFFormula * formula):formula(formula),all_cases(0),satisfying_cases(0),all_cases_o(0),satisfying_cases_o(0){
+  assignments = std::set<assignment>();
+  assignments_o = std::set<assignment>();
 }
 
-void Ppz::solve_ppz(){
-  all_cases = 0;
-  satisfying_cases = 0;
+void Ppz::full_solve_ppz(bool oracle){
+  if(!oracle){
+    all_cases = 0;
+    satisfying_cases = 0;
+  }
+  else{
+    all_cases_o = 0;
+    satisfying_cases_o = 0;
+  }
   unsigned int n = formula->get_n();
   std::vector<int> permutation(n, 0);
   for(int i = 0; i<n; i++){
@@ -27,25 +35,41 @@ void Ppz::solve_ppz(){
         bitstring[j] = 1;
       }
       do{
-        all_cases++;
-        assignment assg = execute_permutation(permutation, bitstring);
+        if(!oracle){
+          all_cases++;
+        }
+        else{
+          all_cases_o++;
+        }
+        assignment assg = execute_permutation(permutation, bitstring, oracle);
         if(assg.size() != 0 && formula->check_bitstring(assg)){
-          satisfying_cases++;
-          assignments.push_back(assg);
+          if(!oracle){
+            satisfying_cases++;
+            assignments.insert(assg);
+          }
+          else{
+            satisfying_cases_o++;
+            assignments_o.insert(assg);
+          }
         }
       } while(std::prev_permutation(bitstring.begin(), bitstring.end()));
     }
   } while(std::next_permutation(permutation.begin(), permutation.end()));
 }
 
-assignment Ppz::execute_permutation(const std::vector<int> & permutation, const std::vector<short> & randombits){
+assignment Ppz::execute_permutation(const std::vector<int> & permutation, const std::vector<short> & randombits, bool oracle = false){
   unsigned n = formula->get_n();
   assignment assg(n, -1);
   CNFFormula F = *formula;
   for(const auto & variable : permutation){
     assg[variable] = F.get_forced_value(variable);
     if(assg[variable] == -1){
-      assg[variable] = randombits[variable];
+      if(oracle && !F.is_frozen(variable, assg)){
+        assg[variable] = 0;
+      }
+      else{
+        assg[variable] = randombits[variable];
+      }
     }
     F = F.make_assignment(assg);
     if(F.get_m() == 0){
@@ -70,5 +94,10 @@ std::ostream & operator<<(std::ostream & out, const Ppz & ppz){
   }
   out << "Total # of tries: " << ppz.all_cases << std::endl;
   out << "# of working tries: " << ppz.satisfying_cases << std::endl;
+  out << "# of satisfying assignments: " << ppz.assignments.size() << std::endl; 
+  out << std::endl;
+  out << "Total # of tries with oracle: " << ppz.all_cases_o << std::endl;
+  out << "# of working tries with oracle: " << ppz.satisfying_cases_o << std::endl;
+  out << "# of satisfying assignments with oracle: " << ppz.assignments_o.size() << std::endl;
   return out;
 }

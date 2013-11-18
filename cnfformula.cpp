@@ -13,10 +13,14 @@ CNFFormula::CNFFormula(unsigned int n, int k, const std::vector<CNFClause> & cla
     assigns satisfying_assignments to contain the satisfying assignments
     and sets was_solved to true. if was_solved is already set to true then we do
     not re-solve.*/
-void CNFFormula::bruteforce_solve_sat(){
+void CNFFormula::bruteforce_solve_sat(std::vector<short> partial){
   // we don't want to re-solve if it has already been solved
   if(was_solved){
     return;
+  }
+
+  if(partial.size() == 0){
+    partial = std::vector<short>(n, -1);
   }
 
   std::vector<short> bitstring;
@@ -28,8 +32,17 @@ void CNFFormula::bruteforce_solve_sat(){
       bitstring[j] = 1;
     }
     do {
-      if(check_bitstring(bitstring)){ 
-        satisfying_assignments.push_back(bitstring);
+      std::vector<short> bitstringwithpartial(n);
+      for(int j = 0; j<n; j++){
+        if(partial[j] != -1){
+          bitstringwithpartial[j] = partial[j];
+        }
+        else{
+          bitstringwithpartial[j] = bitstring[j];
+        }
+      } 
+      if(check_bitstring(bitstringwithpartial)){ 
+        satisfying_assignments.push_back(bitstringwithpartial);
       }
     } while(std::prev_permutation(bitstring.begin(), bitstring.end()));
   }
@@ -144,4 +157,21 @@ int CNFFormula::get_forced_value(int variable) const{
 
 int CNFFormula::get_m() const{
   return clauses.size();
+}
+
+/** bruteforce solves to check if a variable is frozen. quite ugly,
+    but since PPZ is slow as a tetraplegic turtle anyway... */
+bool CNFFormula::is_frozen(int variable, std::vector<short> partial){
+  bruteforce_solve_sat(partial);
+  //if there is no satisfying assignment, the variable has the same value in all sat. assg.
+  if(satisfying_assignments.size() == 0){
+    return true;
+  }
+  short value = satisfying_assignments[0][variable];
+  for(auto const & assig : satisfying_assignments){
+    if(assig[variable] != value){
+      return false;
+    }
+  }
+  return true;
 }

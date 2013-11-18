@@ -49,6 +49,7 @@ int main(){
   f.bruteforce_solve_sat();
   cout << f;
   Ppz * ppz = new Ppz(&f);
-  ppz->solve_ppz();
+  ppz->full_solve_ppz();
+  ppz->full_solve_ppz(true);
   cout << *ppz;
 }

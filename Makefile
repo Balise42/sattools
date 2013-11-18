@@ -1,4 +1,4 @@
-CPP=g++
+CPP=clang++
 CPPFLAGS=-Wall -W -Wextra -std=c++11 -ggdb
 TARGETS=generate_sat_tool ppz_tool
 GENERATE_OBJECTS=cnfclause.o cnfformula.o generate_sat_tool.o satgenerator.o

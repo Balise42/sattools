@@ -80,10 +80,10 @@ CNFFormula SatGenerator::generate_sat(){
 
 bool SatGenerator::check_clause(const CNFClause & clause){
   for(const auto & assignment : assignments){
-    if(clause.check_bitstring(assignment)){
-      return true;
+    if(!clause.check_bitstring(assignment)){
+      return false;
     }
   }
-  return false;
+  return true;
 }
 

@@ -61,3 +61,5 @@ literal CNFClause::getliteral(int pos) const{
 unsigned int CNFClause::size() const{
   return clause.size();
 }
+
+
