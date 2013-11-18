@@ -35,6 +35,7 @@ class CNFFormula{
     int get_forced_value(int variable) const;
     int get_m() const;
     bool is_frozen(int variable, std::vector<short> partial);
+    bool has_satisfying_assignments(){return satisfying_assignments.size() > 0;}
 };
 
 #endif

@@ -26,6 +26,7 @@ class SatGenerator{
     SatGenerator(unsigned int n, unsigned int k, unsigned int nsat, const std::vector<assignment> & assignments);
     ~SatGenerator();
     CNFFormula generate_sat();
+    friend class RandomSatGenerator;
 };
 
 #endif
