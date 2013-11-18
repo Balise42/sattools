@@ -72,9 +72,6 @@ assignment Ppz::execute_permutation(const std::vector<int> & permutation, const 
       }
     }
     F = F.make_assignment(assg);
-    if(F.get_m() == 0){
-      return assg;
-    }
     if(F.is_unsat()){
       return std::vector<short>(0);
     }
