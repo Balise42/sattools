@@ -6,8 +6,8 @@
 #include "cnfformula.h"
 #include "cnfclause.h"
 
-/** Generates a formula from a set of satisfying assignments */
-class SatGenerator{
+/** Generates a maximum formula from a set of satisfying assignments */
+class MaxSatGenerator{
   private:
     /** number of variables */
     const unsigned int n;
@@ -23,8 +23,8 @@ class SatGenerator{
     std::vector<CNFClause> generate_clauses(const std::vector<short> & permutation, int start=0);
     bool check_clause(const CNFClause & clause);
   public:
-    SatGenerator(unsigned int n, unsigned int k, unsigned int nsat, const std::vector<assignment> & assignments);
-    ~SatGenerator();
+    MaxSatGenerator(unsigned int n, unsigned int k, unsigned int nsat, const std::vector<assignment> & assignments);
+    ~MaxSatGenerator();
     CNFFormula generate_sat();
     friend class RandomSatGenerator;
 };

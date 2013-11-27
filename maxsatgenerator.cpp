@@ -1,25 +1,25 @@
 #include <vector>
 #include <algorithm>
-#include "satgenerator.h"
+#include "maxsatgenerator.h"
 
 /** default constructor, creates the object and makes default assignments 
     @param n number of variables
     @param k number of literals in the generated clauses 
     @param nsat number of satisfying assignments
     @param assignments the satisfying assignments for which we want a formula */
-SatGenerator::SatGenerator(unsigned int n, unsigned int k, unsigned int nsat, const std::vector<assignment> & assignments):n(n), k(k), nsat(nsat), assignments(assignments), formula(new CNFFormula(n, k)){
+MaxSatGenerator::MaxSatGenerator(unsigned int n, unsigned int k, unsigned int nsat, const std::vector<assignment> & assignments):n(n), k(k), nsat(nsat), assignments(assignments), formula(new CNFFormula(n, k)){
 }
 
-SatGenerator::~SatGenerator(){
+MaxSatGenerator::~MaxSatGenerator(){
   delete formula;
 }
 
 /** generate all sets of k variables among n variables
     @return a vector of size "n choose k" of vector of size n with k bits set to 1 */
-std::vector<std::vector<short> > SatGenerator::generate_permutations(){
+std::vector<std::vector<short> > MaxSatGenerator::generate_permutations(){
   std::vector<short> initperm(n, 0);
   std::vector<std::vector<short> > permutations;
-  for(int i = 0; i<k; i++){
+  for(unsigned int i = 0; i<k; i++){
     initperm[i] = 1;
   }
   do {
@@ -33,9 +33,9 @@ std::vector<std::vector<short> > SatGenerator::generate_permutations(){
     @param permutation the set of variables to use (vector of size n where k bits are set to 1
     @param start used for the recursive works only, user should not set it (default to 0)
     @return all the clauses corresponding to the permutation - 2^k possibilities */
-std::vector<CNFClause> SatGenerator::generate_clauses(const std::vector<short> & permutation, int start){
+std::vector<CNFClause> MaxSatGenerator::generate_clauses(const std::vector<short> & permutation, int start){
   std::vector<CNFClause> clauses;
-  for(int i = start; i<n; i++){
+  for(unsigned int i = start; i<n; i++){
     if(permutation[i] == 1){
       literal l0;
       l0.variable = i;
@@ -65,7 +65,7 @@ std::vector<CNFClause> SatGenerator::generate_clauses(const std::vector<short> &
   return std::vector<CNFClause>(0);
 }
 
-CNFFormula SatGenerator::generate_sat(){
+CNFFormula MaxSatGenerator::generate_sat(){
   std::vector<std::vector<short> > permutations = generate_permutations();
   for(const auto & permutation : permutations){
     std::vector<CNFClause> allclauses = generate_clauses(permutation);
@@ -78,7 +78,7 @@ CNFFormula SatGenerator::generate_sat(){
   return *formula;
 }
 
-bool SatGenerator::check_clause(const CNFClause & clause){
+bool MaxSatGenerator::check_clause(const CNFClause & clause){
   for(const auto & assignment : assignments){
     if(!clause.check_bitstring(assignment)){
       return false;
