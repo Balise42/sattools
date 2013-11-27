@@ -1,5 +1,5 @@
-#ifndef SATGENERATOR_H
-#define SATGENERATOR_H 1
+#ifndef MAXSATGENERATOR_H
+#define MAXSATGENERATOR_H 1
 
 #include <vector>
 #include "structs.h"
