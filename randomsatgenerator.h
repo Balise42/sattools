@@ -3,15 +3,10 @@
 #include "cnfclause.h"
 #include "satgenerator.h"
 
-class RandomSatGenerator {
-  private:
-    const int k;
-    const int n;
-    CNFFormula formula;
-    /** TODO clean up and proper inheritance */
-    SatGenerator * satgenerator;
+class RandomSatGenerator:public SatGenerator {
   public:
     RandomSatGenerator(int n, int k);
+    ~RandomSatGenerator();
     CNFFormula generate_formula();
-    CNFFormula get_satisfiable_formula();
+    CNFFormula generate_sat();
 };

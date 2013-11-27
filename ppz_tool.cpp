@@ -1,4 +1,4 @@
-#include "satgenerator.h"
+#include "maxsatgenerator.h"
 #include "cnfformula.h"
 #include "ppz.h"
 
@@ -44,7 +44,7 @@ int main(){
     }
   }
 
-  SatGenerator * satgen = new SatGenerator(n, k, nsat, assignments);
+  MaxSatGenerator * satgen = new MaxSatGenerator(n, k, assignments);
   CNFFormula f = satgen->generate_sat();
   f.bruteforce_solve_sat();
   cout << f;

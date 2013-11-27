@@ -21,7 +21,7 @@ void Ppz::full_solve_ppz(bool oracle){
   }
   unsigned int n = formula->get_n();
   std::vector<int> permutation(n, 0);
-  for(int i = 0; i<n; i++){
+  for(unsigned int i = 0; i<n; i++){
     permutation[i] = i;
   }
 

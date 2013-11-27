@@ -15,7 +15,7 @@ int main(){
   cin >> k;
 
   RandomSatGenerator * satgen = new RandomSatGenerator(n, k);
-  CNFFormula f = satgen->get_satisfiable_formula();
+  CNFFormula f = satgen->generate_sat();
   f.bruteforce_solve_sat();
   cout << f;
   Ppz * ppz = new Ppz(&f);
