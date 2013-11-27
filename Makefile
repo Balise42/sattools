@@ -1,8 +1,8 @@
 CPP=clang++
 CPPFLAGS=-Wall -W -Wextra -std=c++11 -ggdb
 TARGETS=generate_sat_tool ppz_tool ppz_random_tool
-GENERATE_OBJECTS=cnfclause.o cnfformula.o generate_sat_tool.o satgenerator.o
-PPZ_OBJECTS=cnfclause.o cnfformula.o satgenerator.o ppz.o ppz_tool.o
+GENERATE_OBJECTS=cnfclause.o cnfformula.o generate_sat_tool.o satgenerator.o maxsatgenerator.o
+PPZ_OBJECTS=cnfclause.o cnfformula.o satgenerator.o ppz.o ppz_tool.o maxsatgenerator.o
 PPZ_RANDOM_OBJECTS=cnfclause.o cnfformula.o satgenerator.o ppz.o randomsatgenerator.o ppz_random_tool.o
 OBJS=$(GENERATE_OBJECTS) $(PPZ_OBJECTS)
 
