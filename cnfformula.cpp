@@ -33,7 +33,7 @@ void CNFFormula::bruteforce_solve_sat(std::vector<short> partial){
     }
     do {
       std::vector<short> bitstringwithpartial(n);
-      for(int j = 0; j<n; j++){
+      for(unsigned int j = 0; j<n; j++){
         if(partial[j] != -1){
           bitstringwithpartial[j] = partial[j];
         }
