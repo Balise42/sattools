@@ -23,41 +23,46 @@ bool CNFClause::add_literal(literal l){
   return true;
 }
 
-///checks whether a given bitstring/assignment satisfies the clause
+///checks whether a given bitstring/assignment satisfies the clause\n
+///note: if the bitstring is "too short", we assume that it is a partial
+///assignment and that a clause containing out-of-bounds variables is
+///satisfied.
 ///@param the bitstring to check
 ///@return true if the bitstring satisfies the clause, false otw
 bool CNFClause::check_bitstring(const std::vector<short> & bitstring) const {
   bool ok = false;
   for(const auto & lit : clause){
-    ok = ok || (lit.value == bitstring[lit.variable]);
+    ok = ok || (lit.variable >= bitstring.size()) || (lit.value == bitstring[lit.variable]);
   }
   return ok;
 }
 
-/** begin iterator over the clauses of the formula */
+/** begin iterator over the literals of the clause */
 CNFClause::iterator CNFClause::begin(){
   return clause.begin();
 }
 
-/** begin iterator over the clauses of the formula */
+/** begin iterator over the literals of the clause */
 CNFClause::const_iterator CNFClause::begin() const{
   return clause.begin();
 }
 
-/** end iterator over the clauses of the formula */
+/** end iterator over the literals of the clause */
 CNFClause::iterator CNFClause::end(){
   return clause.end();
 }
 
-/** end iterator over the clauses of the formula */
+/** end iterator over the literals of the clause */
 CNFClause::const_iterator CNFClause::end() const{
   return clause.end();
 }
 
+/** @return the "pos"th literal of the clause */
 literal CNFClause::getliteral(int pos) const{
-  return clause[pos];
+  return clause.at(pos);
 }
 
+/** @return the number of variables in the clause */
 unsigned int CNFClause::size() const{
   return clause.size();
 }

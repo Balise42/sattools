@@ -66,6 +66,7 @@ bool CNFFormula::check_bitstring(const std::vector<short> & bitstring) const {
 
 void CNFFormula::add_clause(const CNFClause & clause){
   clauses.push_back(clause);
+  was_solved = false;
 }
 
 std::ostream& operator<<(std::ostream& out, const CNFFormula & formula){
@@ -144,7 +145,7 @@ bool CNFFormula::is_unsat() const{
   return false;
 }
 
-int CNFFormula::get_forced_value(int variable) const{
+short CNFFormula::get_forced_value(unsigned int variable) const{
   for(auto const & clause : clauses){
     if(clause.size() == 1){
       if(clause.getliteral(0).variable == variable){
@@ -175,3 +176,21 @@ bool CNFFormula::is_frozen(int variable, std::vector<short> partial){
   }
   return true;
 }
+
+
+CNFFormula::iterator CNFFormula::begin(){
+  return clauses.begin();
+}
+
+CNFFormula::const_iterator CNFFormula::begin() const{
+  return clauses.begin();
+}
+
+CNFFormula::iterator CNFFormula::end(){
+  return clauses.end();
+}
+
+CNFFormula::const_iterator CNFFormula::end() const{
+  return clauses.end();
+}
+

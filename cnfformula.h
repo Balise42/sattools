@@ -32,10 +32,19 @@ class CNFFormula{
     CNFFormula make_assignment(const assignment & assg) const;
     unsigned int get_n() const;
     bool is_unsat() const;
-    int get_forced_value(int variable) const;
+    short get_forced_value(unsigned int variable) const;
     int get_m() const;
     bool is_frozen(int variable, std::vector<short> partial);
     bool has_satisfying_assignments(){return satisfying_assignments.size() > 0;}
+    bool is_solved(){return was_solved;}
+    std::vector<assignment> get_satisfying_assignments(){return satisfying_assignments;}
+
+    typedef std::vector<CNFClause>::iterator iterator;
+    typedef std::vector<CNFClause>::const_iterator const_iterator;
+    iterator begin();
+    const_iterator begin() const;
+    iterator end();
+    const_iterator end() const;
 };
 
 #endif
