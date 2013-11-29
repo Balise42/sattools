@@ -32,6 +32,7 @@ class Ppz{
 
   public:
     Ppz(CNFFormula * formula);
+    assignment random_solve_ppz(double limit);
     void full_solve_ppz(bool oracle = false);
     friend std::ostream & operator<<(std::ostream & out, const Ppz & ppz);
 };

@@ -15,7 +15,7 @@ RandomSatGenerator::~RandomSatGenerator(){
 CNFFormula RandomSatGenerator::generate_formula(){
   std::random_device rd;
   std::mt19937 gen(rd());
-  std::uniform_int_distribution<> dis(0,8);
+  std::uniform_int_distribution<> dis(0,15);
   std::vector<std::vector<short> > permutations = generate_permutations();
   for(const auto & permutation : permutations){
     std::vector<CNFClause> allclauses = generate_clauses(permutation);

@@ -1,6 +1,7 @@
 #include "maxsatgenerator.h"
 #include "cnfformula.h"
 #include "ppz.h"
+#include <cmath>
 
 int main(){
   using namespace std;
@@ -49,7 +50,9 @@ int main(){
   f.bruteforce_solve_sat();
   cout << f;
   Ppz * ppz = new Ppz(&f);
-  ppz->full_solve_ppz();
-  ppz->full_solve_ppz(true);
-  cout << *ppz;
+//  ppz->full_solve_ppz();
+//  ppz->full_solve_ppz(true);
+//  cout << *ppz;
+  double limit = pow(2, n-1.0/k);
+  ppz->random_solve_ppz(limit);
 }

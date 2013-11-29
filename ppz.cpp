@@ -1,6 +1,8 @@
 #include <vector>
 #include <algorithm>
 #include <iostream>
+#include <random>
+#include <chrono>
 
 #include "structs.h"
 #include "ppz.h"
@@ -8,6 +10,34 @@
 Ppz::Ppz(CNFFormula * formula):formula(formula),all_cases(0),satisfying_cases(0),all_cases_o(0),satisfying_cases_o(0){
   assignments = std::set<assignment>();
   assignments_o = std::set<assignment>();
+}
+
+assignment Ppz::random_solve_ppz(double limit){
+  std::cout << "Starting ppz\n";
+  int numtries = 0;
+  std::vector<int> permutation(formula->get_n());
+  std::vector<short> bitstring(formula->get_n());
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  std::uniform_int_distribution<> dis(0,1);
+  for(unsigned int i = 0; i<formula->get_n(); i++){
+    permutation[i] = i;
+  }
+  unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+  do{
+    shuffle (permutation.begin(), permutation.end(), std::default_random_engine(seed));
+    for(unsigned int i = 0; i<formula->get_n(); i++){
+      bitstring[i] = dis(gen);
+    }
+    assignment assg = execute_permutation(permutation, bitstring, false);
+    numtries++;
+    if(assg.size() != 0 && formula->check_bitstring(assg)){
+      std::cout << "Number of tries: " << numtries << std::endl;
+      return assg;
+    }
+  } while(numtries < limit);
+  std::cout << "PPZ failed.\n";
+  return std::vector<short>(0);
 }
 
 void Ppz::full_solve_ppz(bool oracle){
