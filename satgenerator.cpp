@@ -1,6 +1,7 @@
 #include <vector>
 #include <algorithm>
 #include "satgenerator.h"
+#include "cnfformula.h"
 
 SatGenerator::SatGenerator(unsigned int n, unsigned int k):n(n),k(k), formula(new CNFFormula(n, k)){
 }

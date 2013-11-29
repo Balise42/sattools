@@ -1,9 +1,10 @@
 CPP=clang++
 CPPFLAGS=-Wall -W -Wextra -std=c++11 -ggdb
-TARGETS=generate_sat_tool ppz_tool ppz_random_tool
+TARGETS=generate_sat_tool ppz_tool ppz_random_tool dimacs_tool
 GENERATE_OBJECTS=cnfclause.o cnfformula.o generate_sat_tool.o satgenerator.o maxsatgenerator.o
 PPZ_OBJECTS=cnfclause.o cnfformula.o satgenerator.o ppz.o ppz_tool.o maxsatgenerator.o
 PPZ_RANDOM_OBJECTS=cnfclause.o cnfformula.o satgenerator.o ppz.o randomsatgenerator.o ppz_random_tool.o
+DIMACS_OBJECTS=cnfclause.o cnfformula.o satgenerator.o dimacsgenerator.o dimacs_tool.o
 OBJS=$(GENERATE_OBJECTS) $(PPZ_OBJECTS)
 # Points to the root of Google Test, relative to where this file is.
 # Remember to tweak this if you move this file.
@@ -25,6 +26,9 @@ ppz_tool: $(PPZ_OBJECTS)
 
 ppz_random_tool: $(PPZ_RANDOM_OBJECTS)
 	$(CPP) $(CPPFLAGS) $(PPZ_RANDOM_OBJECTS) -o $@
+
+dimacs_tool: $(DIMACS_OBJECTS)
+	$(CPP) $(CPPFLAGS) $(DIMACS_OBJECTS) -o $@
 
 clean:
 	-rm -f $(OBJS) $(TARGETS)

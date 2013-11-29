@@ -2,6 +2,7 @@
 #define CLAUSE_H 1
 
 #include <vector>
+#include <iostream>
 #include "structs.h"
 
 /** CNF clause (disjunction of literals) */
@@ -12,8 +13,10 @@ class CNFClause{
   public:
     CNFClause();
     CNFClause(const std::vector<literal> & clause);
+    CNFClause(const std::vector<int> & clausespec);
     bool add_literal(literal l);
     bool check_bitstring(const std::vector<short> & bitstring) const;
+    friend std::ostream& operator<<(std::ostream& out, const CNFClause & clause);
 
     typedef std::vector<literal>::iterator iterator;
     typedef std::vector<literal>::const_iterator const_iterator;

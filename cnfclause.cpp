@@ -1,4 +1,6 @@
 #include <vector>
+#include <cstdlib>
+#include <iostream>
 #include "cnfclause.h"
 
 ///creates an empty clause
@@ -8,6 +10,23 @@ CNFClause::CNFClause() : clause(std::vector<literal>(0)) {
 ///creates a clause from a vector of literals
 ///@param clause the vector of literals
 CNFClause::CNFClause(const std::vector<literal> & clause) : clause(clause){
+}
+
+CNFClause::CNFClause(const std::vector<int> & clausespec) :  clause(std::vector<literal>(0)){
+  literal l;
+  for(const auto & litspec : clausespec){
+    if(litspec == 0){
+      return;
+    }
+    l.variable = abs(litspec)-1;
+    if(litspec > 0){
+      l.value = 1;
+    }
+    else{
+      l.value = 0;
+    }
+    clause.push_back(l);
+  }
 }
 
 ///add a literal to the clause
@@ -67,4 +86,13 @@ unsigned int CNFClause::size() const{
   return clause.size();
 }
 
-
+std::ostream& operator<<(std::ostream& out, const CNFClause & clause){
+  for(const auto & literal : clause){
+    if(literal.value == 0){
+      out << "~";
+    }
+  out << "x" << literal.variable+1 << ",";
+  }
+  out << std::endl;
+  return out;
+}

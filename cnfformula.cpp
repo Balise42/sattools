@@ -71,13 +71,7 @@ void CNFFormula::add_clause(const CNFClause & clause){
 
 std::ostream& operator<<(std::ostream& out, const CNFFormula & formula){
   for(const auto & clause : formula.clauses){
-    for(const auto & literal : clause){
-      if(literal.value == 0){
-        out << "~";
-      }
-      out << "x" << literal.variable+1 << ",";
-    }
-    out << std::endl;
+    out << clause;
   }
   if(formula.was_solved){
     out << "Assignments:" << std::endl;

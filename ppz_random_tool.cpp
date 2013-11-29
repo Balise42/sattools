@@ -12,10 +12,15 @@ int main(){
 
   //k-sat ; k=?
   unsigned int k;
-  cout << "What's k?" << endl << endl << "> ";
+  cout << "What's k?" << endl << "> ";
   cin >> k;
 
-  RandomSatGenerator * satgen = new RandomSatGenerator(n, k);
+  //probability of keeping a clause
+  int prob;
+  cout << "Probability range?" << endl << "> ";
+  cin >> prob;
+
+  RandomSatGenerator * satgen = new RandomSatGenerator(n, k, prob);
   CNFFormula f = satgen->generate_formula();
   f.bruteforce_solve_sat();
   cout << f;
