@@ -24,6 +24,7 @@ class CNFFormula{
     std::vector<assignment> satisfying_assignments;
 
   public:
+    CNFFormula();
     CNFFormula(unsigned int n, int k, const std::vector<CNFClause> & clauses = std::vector<CNFClause>(0), const std::vector<assignment> assignments  = std::vector<assignment>(0));
     void bruteforce_solve_sat(std::vector<short> partial = std::vector<short>(0));
     bool check_bitstring(const std::vector<short> & bitstring) const;

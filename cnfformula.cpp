@@ -9,6 +9,8 @@
 CNFFormula::CNFFormula(unsigned int n, int k, const std::vector<CNFClause> & clauses, const std::vector<assignment> assignments):n(n), k(k), clauses(clauses),unchecked_assignments(assignments){
 }
 
+CNFFormula::CNFFormula(){}
+
 /** solves a CNF formula by brute force - going to all 2^n assignments.
     assigns satisfying_assignments to contain the satisfying assignments
     and sets was_solved to true. if was_solved is already set to true then we do
