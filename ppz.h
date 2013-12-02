@@ -2,10 +2,11 @@
 #define PPZ_H 1
 
 #include <vector>
+#include <set>
 #include <iostream>
 #include "cnfformula.h"
 #include "structs.h"
-#include <set>
+#include "ppzrunstats.h"
 
 /** This is a derandomized PPZ algorithm, and by derandomized I mean it goes through
     ALL the permutations of the variables and through ALL the 0/1 bits when they are
@@ -19,19 +20,20 @@ class Ppz{
     std::set<assignment> assignments;
     /** satisfying assignments at the end of the algorithm with oracle */
     std::set<assignment> assignments_o;
-    /** counts all the cases executed by ppz */
-    int all_cases;
-    /** counts all cases that actually return a satisfying assignment */
-    int satisfying_cases;
-    /** counts all the cases executed by ppz with oracle */
-    int all_cases_o;
-    /** counts the satisfying cases for ppz with oracle */
-    int satisfying_cases_o;
+    /** whether we're currently dealing with assignmets or assignmets_o */
+    std::set<assignment> * currassg;
+    /** stats for PPZ run */
+    PpzRunStats * stats;
+    /** stats for PPZ run with oracle */
+    PpzRunStats * stats_o;
+    /** whether we're currently dealing with stats or stats_o */
+    PpzRunStats * currstats;
 
     assignment execute_permutation(const std::vector<int> & permutation, const std::vector<short> & randombits, bool oracle);
 
   public:
     Ppz(CNFFormula * formula);
+    ~Ppz();
     assignment random_solve_ppz(double limit);
     void full_solve_ppz(bool oracle = false);
     friend std::ostream & operator<<(std::ostream & out, const Ppz & ppz);

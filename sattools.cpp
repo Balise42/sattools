@@ -88,17 +88,17 @@ int main(int argc, char** argv){
     f2.bruteforce_solve_sat();
     std::cout << f2;
   }
-  if(vm.count("ppzfull")){
+  if(vm.count("ppzfull") || vm.count("ppzfulloracle")){
     CNFFormula f2 = f;
     Ppz ppz(&f);
-    ppz.full_solve_ppz();
-    std::cout << ppz;
-  }
-  if(vm.count("ppzfulloracle")){
-    CNFFormula f2 = f;
-    Ppz ppz(&f);
-    ppz.full_solve_ppz(true);
-    std::cout << ppz;
+
+    if(vm.count("ppzfull")){
+      ppz.full_solve_ppz();
+    }
+    if(vm.count("ppzfulloracle")){
+      ppz.full_solve_ppz(true);  
+    }
+    std::cout << ppz << std::endl;
   }
   if(vm.count("ppzrandom")){
     CNFFormula f2 = f;

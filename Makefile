@@ -2,10 +2,10 @@ CPP=clang++
 CPPFLAGS=-Wall -W -Wextra -std=c++11 -ggdb
 TARGETS=generate_sat_tool ppz_tool ppz_random_tool dimacs_tool sattools
 GENERATE_OBJECTS=cnfclause.o cnfformula.o generate_sat_tool.o satgenerator.o maxsatgenerator.o
-PPZ_OBJECTS=cnfclause.o cnfformula.o satgenerator.o ppz.o ppz_tool.o maxsatgenerator.o
-PPZ_RANDOM_OBJECTS=cnfclause.o cnfformula.o satgenerator.o ppz.o randomsatgenerator.o ppz_random_tool.o
+PPZ_OBJECTS=cnfclause.o cnfformula.o satgenerator.o ppz.o ppz_tool.o maxsatgenerator.o ppzrunstats.o
+PPZ_RANDOM_OBJECTS=cnfclause.o cnfformula.o satgenerator.o ppz.o randomsatgenerator.o ppz_random_tool.o ppzrunstats.o
 DIMACS_OBJECTS=cnfclause.o cnfformula.o satgenerator.o dimacsgenerator.o dimacs_tool.o
-SATTOOLS_OBJECTS=cnfclause.o cnfformula.o satgenerator.o dimacsgenerator.o sattools.o ppz.o randomsatgenerator.o maxsatgenerator.o
+SATTOOLS_OBJECTS=cnfclause.o cnfformula.o satgenerator.o dimacsgenerator.o sattools.o ppz.o randomsatgenerator.o maxsatgenerator.o ppzrunstats.o
 OBJS=$(GENERATE_OBJECTS) $(PPZ_OBJECTS) $(DIMACS_OBJECTS) $(SATTOOLS_OBJECTS)
 LIBS=-lboost_program_options
 # Points to the root of Google Test, relative to where this file is.

@@ -6,11 +6,19 @@
 
 #include "structs.h"
 #include "ppz.h"
+#include "ppzrunstats.h"
 
-Ppz::Ppz(CNFFormula * formula):formula(formula),all_cases(0),satisfying_cases(0),all_cases_o(0),satisfying_cases_o(0){
+Ppz::Ppz(CNFFormula * formula):formula(formula){
   assignments = std::set<assignment>();
   assignments_o = std::set<assignment>();
+  stats = new PpzRunStats();
+  stats_o = new PpzRunStats();
 }
+
+Ppz::~Ppz(){
+  delete stats;
+  delete stats_o;
+} 
 
 assignment Ppz::random_solve_ppz(double limit){
   std::cout << "Starting ppz\n";
@@ -42,13 +50,16 @@ assignment Ppz::random_solve_ppz(double limit){
 
 void Ppz::full_solve_ppz(bool oracle){
   if(!oracle){
-    all_cases = 0;
-    satisfying_cases = 0;
+    stats = new PpzRunStats();
+    currstats = stats;
+    currassg = &assignments;
   }
   else{
-    all_cases_o = 0;
-    satisfying_cases_o = 0;
+    stats_o = new PpzRunStats();
+    currstats = stats_o;
+    currassg = &assignments_o;
   }
+
   unsigned int n = formula->get_n();
   std::vector<int> permutation(n, 0);
   for(unsigned int i = 0; i<n; i++){
@@ -57,6 +68,7 @@ void Ppz::full_solve_ppz(bool oracle){
 
   do{
     std::vector<short> bitstring;
+    
     //we enumerate all the bitstrings by taking all permutations of strings
     //that have i bits to 1
     for(unsigned int i = 0; i<= n; i++){
@@ -65,29 +77,19 @@ void Ppz::full_solve_ppz(bool oracle){
         bitstring[j] = 1;
       }
       do{
-        if(!oracle){
-          all_cases++;
-        }
-        else{
-          all_cases_o++;
-        }
         assignment assg = execute_permutation(permutation, bitstring, oracle);
-        if(assg.size() != 0 && formula->check_bitstring(assg)){
-          if(!oracle){
-            satisfying_cases++;
-            assignments.insert(assg);
-          }
-          else{
-            satisfying_cases_o++;
-            assignments_o.insert(assg);
-          }
+        bool success = assg.size() != 0 && formula->check_bitstring(assg);
+        if(success){
+          currassg->insert(assg);
         }
+        currstats->tally_stats(success);
       } while(std::prev_permutation(bitstring.begin(), bitstring.end()));
     }
   } while(std::next_permutation(permutation.begin(), permutation.end()));
 }
 
 assignment Ppz::execute_permutation(const std::vector<int> & permutation, const std::vector<short> & randombits, bool oracle = false){
+  currstats->tmpforced = 0;
   unsigned n = formula->get_n();
   assignment assg(n, -1);
   CNFFormula F = *formula;
@@ -100,6 +102,9 @@ assignment Ppz::execute_permutation(const std::vector<int> & permutation, const 
       else{
         assg[variable] = randombits[variable];
       }
+    }
+    else{
+      currstats->tmpforced++;
     }
     F = F.make_assignment(assg);
     if(F.is_unsat()){
@@ -119,12 +124,14 @@ std::ostream & operator<<(std::ostream & out, const Ppz & ppz){
     }
     out << std::endl;
   }
-  out << "Total # of tries: " << ppz.all_cases << std::endl;
-  out << "# of working tries: " << ppz.satisfying_cases << std::endl;
-  out << "# of satisfying assignments: " << ppz.assignments.size() << std::endl; 
   out << std::endl;
-  out << "Total # of tries with oracle: " << ppz.all_cases_o << std::endl;
-  out << "# of working tries with oracle: " << ppz.satisfying_cases_o << std::endl;
-  out << "# of satisfying assignments with oracle: " << ppz.assignments_o.size() << std::endl;
+  out << "Without oracle" << std::endl;
+  out << "==============" << std::endl;
+  out << "Total number of satisfying assignments: " << ppz.assignments.size() << std::endl;
+  out << * ppz.stats << std::endl;
+  out << "With oracle" << std::endl;
+  out << "==============" << std::endl;
+  out << "Total number of satisfying assignments: " << ppz.assignments_o.size() << std::endl;
+  out << * ppz.stats_o;
   return out;
 }
