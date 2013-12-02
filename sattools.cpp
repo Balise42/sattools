@@ -49,7 +49,8 @@ int main(int argc, char** argv){
     std::cout << desc << std::endl;
   }
   else if(vm.count("interactive")){
-    std::cout << "interactive mode, yo" << std::endl;
+    std::cout << "Interactive mode not implemented yet." << std::endl;
+    return -1;
   }
   else{
     if(vm.count("file")){
