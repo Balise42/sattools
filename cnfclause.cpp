@@ -1,6 +1,7 @@
 #include <vector>
 #include <cstdlib>
 #include <iostream>
+#include <fstream>
 #include "cnfclause.h"
 
 ///creates an empty clause
@@ -95,4 +96,16 @@ std::ostream& operator<<(std::ostream& out, const CNFClause & clause){
   }
   out << std::endl;
   return out;
+}
+
+void CNFClause::save(std::ofstream & file) const{
+  if(file.is_open()){
+    for(const auto & lit : clause){
+      if(lit.value == 0){
+        file << "-";
+      }
+      file << lit.variable+1 << " ";
+    }
+    file << "0" << std::endl;
+  }
 }

@@ -1,6 +1,7 @@
 #include <vector>
 #include <algorithm>
 #include <iostream>
+#include <fstream>
 #include <cassert>
 #include "cnfformula.h"
 #include "structs.h"
@@ -190,3 +191,15 @@ CNFFormula::const_iterator CNFFormula::end() const{
   return clauses.end();
 }
 
+void CNFFormula::save(std::string filename){
+  std::ofstream file;
+  file.open(filename, std::ios::out | std::ios::trunc);
+  if(!file.is_open()){
+    return;
+  }
+  file << "p cnf " << n << " " << get_m() << std::endl;
+  for(const auto & clause : clauses){
+    clause.save(file);
+  }
+  file.close();
+}

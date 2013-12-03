@@ -39,6 +39,7 @@ class CNFFormula{
     bool has_satisfying_assignments(){return satisfying_assignments.size() > 0;}
     bool is_solved(){return was_solved;}
     std::vector<assignment> get_satisfying_assignments(){return satisfying_assignments;}
+    void save(std::string filename);
 
     typedef std::vector<CNFClause>::iterator iterator;
     typedef std::vector<CNFClause>::const_iterator const_iterator;

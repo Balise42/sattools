@@ -7,6 +7,7 @@
 #include "dimacsgenerator.h"
 #include "ppz.h"
 #include "randomsatgenerator.h"
+#include "maxsatgenerator.h"
 
 CNFFormula get_file_formula(std::string filename, int k){
   std::ifstream file(filename);
@@ -15,6 +16,11 @@ CNFFormula get_file_formula(std::string filename, int k){
     return dg.generate_sat();
   }
   throw;
+}
+
+CNFFormula get_max_formula(unsigned int n, unsigned int k, std::vector<assignment> as){
+  MaxSatGenerator mg(n,k,as);
+  return mg.generate_sat();
 }
 
 CNFFormula get_random_formula(unsigned int n, unsigned int k, unsigned int p){
@@ -26,6 +32,7 @@ int main(int argc, char** argv){
   CNFFormula f;
   bool formula_init = false;
   unsigned int n, k;
+  std::string savefilename = "formula.cnf";
   namespace po = boost::program_options;
   po::options_description desc("Options");
   desc.add_options()
@@ -40,7 +47,8 @@ int main(int argc, char** argv){
     ("bruteforce", "Solve by bruteforce - warning, all case exponential time algorithm!")
     ("ppzfull", "Solve by full ppz - warning, all case superexponential time algorithm!")
     ("ppzfulloracle", "Solve by full ppz with oracle - warning, all case superexponential time algorithm!")
-    ("ppzrandom", "Solve by random ppz - warning, worst case exponential time algorithm!");
+    ("ppzrandom", "Solve by random ppz - warning, worst case exponential time algorithm!")
+    ("save,s", po::value<std::string>(),"Save the formula in DIMACS format in given file. Default is save in 'formula.cnf'.");
 
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -56,6 +64,7 @@ int main(int argc, char** argv){
     if(vm.count("file")){
       if(!vm.count("k")){
         std::cerr << "Need to provide k when providing a file" << std::endl;
+        return -1;
       }
       std::string filename = vm["file"].as<std::string>();
       k = vm["k"].as<unsigned int>();
@@ -64,19 +73,39 @@ int main(int argc, char** argv){
     }
     else if(!vm.count("n") || !vm.count("k")){
       std::cerr << "Need to provide n and k if not providing a file" << std::endl;
+      return -1;
     }
+    k = vm["k"].as<unsigned int>();
     if(vm.count("random")){
       n = vm["n"].as<unsigned int>();
-      k = vm["k"].as<unsigned int>();
       unsigned int p = vm["random"].as<unsigned int>();
       f = get_random_formula(n, k, p);
       formula_init = true;
     }
     else if(vm.count("max")){
+      n = vm["n"].as<unsigned int>();
       if(!vm.count("assignment")){
         std::cerr << "Need to provide assignments for max formulas (or -a none for empty formula)" << std::endl;
       }
-//      f = get_max_formula(n, k, assignments);
+      std::vector<assignment> assignments;
+      std::vector<std::string> strass = vm["assignment"].as<std::vector<std::string> >();
+      for(const auto & as : strass){
+        assignment a;
+        for(const auto & ch : as){
+          if(ch == '0'){
+            a.push_back(0);
+          }
+          else if(ch == '1'){
+            a.push_back(1);
+          }
+          else{
+            std::cerr << "Invalid assignment " << ch << std::endl;
+            return -1;
+          }
+        }
+        assignments.push_back(a);
+      }
+      f = get_max_formula(n, k, assignments);
       formula_init = true;
     }
   }
@@ -107,4 +136,8 @@ int main(int argc, char** argv){
     double limit = pow(2, n-1.0/k);
     ppz.random_solve_ppz(limit);
   }
+  if(vm.count("save")){
+    savefilename = vm["save"].as<std::string>();
+  }
+  f.save(savefilename);
 }
