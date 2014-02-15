@@ -26,6 +26,7 @@ class Execution {
     void ppzfulloracle();
     void ppzrandom();
     void save(std::string filename);
+    bool is_formula_init();
 };
 
 #endif

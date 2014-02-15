@@ -16,6 +16,10 @@ Execution::~Execution(){
   delete ppz;
 }
 
+bool Execution::is_formula_init(){
+  return formula_init;
+}
+
 void Execution::get_file_formula(std::string filename, unsigned int k){
   std::ifstream file(filename);
   if(file.is_open()){
