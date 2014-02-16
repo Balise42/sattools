@@ -5,7 +5,7 @@ GENERATE_OBJECTS=cnfclause.o cnfformula.o generate_sat_tool.o satgenerator.o max
 PPZ_OBJECTS=cnfclause.o cnfformula.o satgenerator.o ppz.o ppz_tool.o maxsatgenerator.o ppzrunstats.o
 PPZ_RANDOM_OBJECTS=cnfclause.o cnfformula.o satgenerator.o ppz.o randomsatgenerator.o ppz_random_tool.o ppzrunstats.o
 DIMACS_OBJECTS=cnfclause.o cnfformula.o satgenerator.o dimacsgenerator.o dimacs_tool.o
-SATTOOLS_OBJECTS=cnfclause.o cnfformula.o satgenerator.o dimacsgenerator.o sattools.o ppz.o randomsatgenerator.o maxsatgenerator.o ppzrunstats.o commandline.o interactivemode.o execution.o formulacreationmenu.o
+SATTOOLS_OBJECTS=cnfclause.o cnfformula.o satgenerator.o dimacsgenerator.o sattools.o ppz.o randomsatgenerator.o maxsatgenerator.o ppzrunstats.o commandline.o interactivemode.o execution.o formulacreationmenu.o userinput.o
 OBJS=$(GENERATE_OBJECTS) $(PPZ_OBJECTS) $(DIMACS_OBJECTS) $(SATTOOLS_OBJECTS)
 LIBS=-lboost_program_options
 # Points to the root of Google Test, relative to where this file is.

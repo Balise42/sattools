@@ -7,6 +7,7 @@
 #include "cnfformula.h"
 #include "interactivemode.h"
 #include "cliexception.h"
+#include "structs.h"
 
 CommandLine::CommandLine(int argc, char ** argv):desc(new po::options_description("Options")),vm(new po::variables_map()),execution(new Execution()){
   desc->add_options()
