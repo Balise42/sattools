@@ -11,24 +11,24 @@ Said algorithms are, however, much more on the theoretic/exponential bounds side
 The PPZ algorithm was first described in the paper Satisfiability Coding Lemma by Paturi, Pudlak and Zane (see http://cm.bell-labs.com/who/francis/papers/focs97.ps). The "random" implementation is closest to the spirit of this algorithm - it picks a random permutation and a random codeword and tries them against the formula, retrying until it finds something or until it gets to a pre-set number of iterations. Our "full" implementation allows us to check for all the permutations and all the codewords. Our "full with oracle" implementation allows us to check for all the permutations and all the codewords, with the twist that, if both literals of a variable are satisfying, we always set that variable to 0. This implementation actually relies on a bruteforce solving of the assignments - it is NOT designed for any solving per se, but to get statistics and insight about the algorithm for different formulas.
 
 ## Executable options
-  -h [ --help ]           Print help message
-  -n [ --n ] arg          Number of variables
-  -k [ --k ] arg          Arity of a clause
-  -f [ --file ] arg       Get formula from file
-  -r [ --random ] arg     Get random formula with given random range
-  -m [ --max ]            Get maximum formula from a set of assignments
-  -a [ --assignment ] arg List of assignments for -m
-  -i [ --interactive ]    Interactive mode
-  --bruteforce            Solve by bruteforce - warning, all case exponential 
-                          time algorithm!
-  --ppzfull               Solve by full ppz - warning, all case 
-                          superexponential time algorithm!
-  --ppzfulloracle         Solve by full ppz with oracle - warning, all case 
-                          superexponential time algorithm!
-  --ppzrandom             Solve by random ppz - warning, worst case exponential
-                          time algorithm!
-  -s [ --save ] arg       Save the formula in DIMACS format in given file. 
-                          Default is save in 'formula.cnf'.
+    -h [ --help ]           Print help message
+    -n [ --n ] arg          Number of variables
+    -k [ --k ] arg          Arity of a clause
+    -f [ --file ] arg       Get formula from file
+    -r [ --random ] arg     Get random formula with given random range
+    -m [ --max ]            Get maximum formula from a set of assignments
+    -a [ --assignment ] arg List of assignments for -m
+    -i [ --interactive ]    Interactive mode
+    --bruteforce            Solve by bruteforce - warning, all case exponential 
+                            time algorithm!
+    --ppzfull               Solve by full ppz - warning, all case 
+                            superexponential time algorithm!
+    --ppzfulloracle         Solve by full ppz with oracle - warning, all case 
+                            superexponential time algorithm!
+    --ppzrandom             Solve by random ppz - warning, worst case exponential
+                            time algorithm!
+    -s [ --save ] arg       Save the formula in DIMACS format in given file. 
+                            Default is save in 'formula.cnf'.
 
 ## Description of the source files
 * Main executable
