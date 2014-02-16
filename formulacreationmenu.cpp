@@ -9,6 +9,10 @@
 FormulaCreationMenu::FormulaCreationMenu(Execution * ex):ex(ex),ui(new UserInput()){
 }
 
+FormulaCreationMenu::~FormulaCreationMenu(){
+  delete ui;
+}
+
 void FormulaCreationMenu::ask_k(){
   while(1){
     try{
@@ -133,5 +137,6 @@ void FormulaCreationMenu::run(){
       break;
     default:
       std::cout << "Please choose a valid option [1-3]" << std::endl;
+      break;
   }
 }

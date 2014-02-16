@@ -14,6 +14,7 @@ class Execution {
     unsigned int n;
     unsigned int k;
     bool formula_init;
+    bool ppz_init;
 
   public:
     Execution();
@@ -27,6 +28,10 @@ class Execution {
     void ppzrandom();
     void save(std::string filename);
     bool is_formula_init();
+    void clearppz();
+    void restart();
+    void print_formula();
+    void print_ppz();
 };
 
 #endif

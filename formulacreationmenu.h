@@ -12,6 +12,7 @@ class FormulaCreationMenu{
 
   public:
     FormulaCreationMenu(Execution * ex);
+    ~FormulaCreationMenu();
     void run();
     void ask_k();
     void ask_n();
