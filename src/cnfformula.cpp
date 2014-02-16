@@ -71,6 +71,10 @@ unsigned int CNFFormula::get_n() const{
   return n;
 }
 
+unsigned int CNFFormula::get_k() const{
+  return k;
+}
+
 bool CNFFormula::is_unsat() const{
   for(auto const & clause : clauses){
     if(clause.size() == 0){

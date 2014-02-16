@@ -15,8 +15,6 @@ class CommandLine{
     po::options_description * desc;
     /** map options/value from the command line */
     po::variables_map * vm;
-    /** Execution instance where the commands are sent */
-    Execution * execution;
 
   public:
     /** construct an object from the command line arguments */
@@ -28,11 +26,11 @@ class CommandLine{
     /** prints help (summary of the options) */
     void print_help();
     /** gets the filename and arity of clauses, dispatches to Execution */
-    void parse_file_options();
+    void parse_file_options(CNFFormula & f);
     /** gets the parameters for the random formula generator, dispatches to Execution */
-    void parse_random();
+    void parse_random(CNFFormula & f);
     /** gets the parameter for the "max formula" generator, dispatches to Execution */
-    void parse_max();
+    void parse_max(CNFFormula & f);
 };
 
 #endif

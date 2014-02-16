@@ -42,6 +42,9 @@ class CNFFormula{
     /** accessor for private field n (number of variables) */
     unsigned int get_n() const;
 
+    /** accessor for private field k (arity) */
+    unsigned int get_k() const;
+
     /** checks whether a formula is trivially unsatisfiable
     @return true if the formula contains the empty clause, false otherwise */
     bool is_unsat() const;
