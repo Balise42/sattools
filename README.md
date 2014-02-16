@@ -1,16 +1,19 @@
 #sattools
 
 ## Description of the project
-SAT tools - small SAT formula generator from assignments, some algorithms. NOT intended for efficiency.
+SAT tools - some experiments around SAT formulas. Includes some formula generators and some algorithm implementations. The main goal of this project is to do statistics on executions of random algorithms (namely PPZ); for this we consider all possible random choices that the algorithm can do. Hence, the algorithms are explicitely and knowingly very inefficient.
 
 I'm working on a research project around SAT - and I need a few tools around that, including simulation of algorithms I'm currently working on with different variants. I'm trying to get my code as generic and proper/usable as possible so that it may be used by other people!
 
 Said algorithms are, however, much more on the theoretic/exponential bounds side - this is typically NOT a SAT solver that will solve anything "big" in any remotely reasonable time. We're talking Omega(2^n) time here. Don't expect better.
 
 ## Some context
-The PPZ algorithm was first described in the paper Satisfiability Coding Lemma by Paturi, Pudlak and Zane (see http://cm.bell-labs.com/who/francis/papers/focs97.ps). The "random" implementation is closest to the spirit of this algorithm - it picks a random permutation and a random codeword and tries them against the formula, retrying until it finds something or until it gets to a pre-set number of iterations. Our "full" implementation allows us to check for all the permutations and all the codewords. Our "full with oracle" implementation allows us to check for all the permutations and all the codewords, with the twist that, if both literals of a variable are satisfying, we always set that variable to 0. This implementation actually relies on a bruteforce solving of the assignments - it is NOT designed for any solving per se, but to get statistics and insight about the algorithm for different formulas.
+The PPZ algorithm was first described in the paper Satisfiability Coding Lemma by Paturi, Pudlak and Zane (see http://cm.bell-labs.com/who/francis/papers/focs97.ps). The "random" implementation is closest to the spirit of this algorithm - it picks a random permutation and a random codeword and tries them against the formula, retrying until it finds something or until it gets to a pre-set number of iterations. With the "full" implementation, one can check for all the permutations and all the codewords. With the "full with oracle" implementation, one can check for all the permutations and all the codewords, with the twist that, if both literals of a variable are satisfying, that variable is always set to 0. This implementation actually relies on a bruteforce solving of the assignments - it is NOT designed for any solving per se, but to get statistics and insight about the algorithm for different formulas.
 
 ## Executable options
+The main executable is "sattools". The other executables (dimacs_tool, generate_sat_tool, ppz_random_tool and ppz_tool) are older tentatives and should be deprecated at some point.
+
+Options for "sattools"
     -h [ --help ]           Print help message
     -n [ --n ] arg          Number of variables
     -k [ --k ] arg          Arity of a clause
