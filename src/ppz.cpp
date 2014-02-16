@@ -7,6 +7,7 @@
 #include "structs.h"
 #include "ppz.h"
 #include "ppzrunstats.h"
+#include "solvedcnf.h"
 
 Ppz::Ppz(CNFFormula * formula):formula(formula){
   assignments = std::set<assignment>();
@@ -93,10 +94,11 @@ assignment Ppz::execute_permutation(const std::vector<int> & permutation, const 
   unsigned n = formula->get_n();
   assignment assg(n, -1);
   CNFFormula F = *formula;
+  SolvedCNF solf(F);
   for(const auto & variable : permutation){
     assg[variable] = F.get_forced_value(variable);
     if(assg[variable] == -1){
-      if(oracle && !F.is_frozen(variable, assg)){
+      if(oracle && !solf.is_frozen(variable, assg)){
         assg[variable] = 0;
       }
       else{

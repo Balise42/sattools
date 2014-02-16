@@ -2,6 +2,7 @@
 #include <cmath>
 #include "cnfformula.h"
 #include "ppz.h"
+#include "solvedcnf.h"
 
 int main(){
   using namespace std;
@@ -22,8 +23,8 @@ int main(){
 
   RandomSatGenerator * satgen = new RandomSatGenerator(n, k, prob);
   CNFFormula f = satgen->generate_formula();
-  f.bruteforce_solve_sat();
-  cout << f;
+  SolvedCNF solf(f);
+  cout << solf;
   Ppz * ppz = new Ppz(&f);
 //  ppz->full_solve_ppz();
 //  ppz->full_solve_ppz(true);

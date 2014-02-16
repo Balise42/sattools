@@ -6,46 +6,10 @@
 #include "cnfformula.h"
 #include "structs.h"
 
-CNFFormula::CNFFormula(unsigned int n, int k, const std::vector<CNFClause> & clauses, const std::vector<assignment> assignments):n(n), k(k), clauses(clauses),unchecked_assignments(assignments){
+CNFFormula::CNFFormula(unsigned int n, int k, const std::vector<CNFClause> & clauses):n(n), k(k), clauses(clauses){
 }
 
 CNFFormula::CNFFormula(){}
-
-void CNFFormula::bruteforce_solve_sat(std::vector<short> partial){
-  // we don't want to re-solve if it has already been solved
-  if(was_solved){
-    return;
-  }
-
-  if(partial.size() == 0){
-    partial = std::vector<short>(n, -1);
-  }
-
-  std::vector<short> bitstring;
-  //we enumerate all the bitstrings by taking all permutations of strings
-  //that have i bits to 1
-  for(unsigned int i = 0; i<=n; i++){
-    bitstring = std::vector<short>(n, 0);
-    for(unsigned int j = 0; j<i; j++){
-      bitstring[j] = 1;
-    }
-    do {
-      std::vector<short> bitstringwithpartial(n);
-      for(unsigned int j = 0; j<n; j++){
-        if(partial[j] != -1){
-          bitstringwithpartial[j] = partial[j];
-        }
-        else{
-          bitstringwithpartial[j] = bitstring[j];
-        }
-      } 
-      if(check_bitstring(bitstringwithpartial)){ 
-        satisfying_assignments.push_back(bitstringwithpartial);
-      }
-    } while(std::prev_permutation(bitstring.begin(), bitstring.end()));
-  }
-  was_solved = true;
-}
 
 bool CNFFormula::check_bitstring(const std::vector<short> & bitstring) const {
   //we just check if it satisfies all clauses
@@ -59,23 +23,11 @@ bool CNFFormula::check_bitstring(const std::vector<short> & bitstring) const {
 
 void CNFFormula::add_clause(const CNFClause & clause){
   clauses.push_back(clause);
-  was_solved = false;
 }
 
 std::ostream& operator<<(std::ostream& out, const CNFFormula & formula){
   for(const auto & clause : formula.clauses){
     out << clause;
-  }
-  if(formula.was_solved){
-    out << "Assignments:" << std::endl;
-    for(const auto & assig:formula.satisfying_assignments){
-      int var = 1;
-      for(const auto & lit : assig){
-        out << "x" << var << "=" << lit << ",";
-        var++;
-      }
-      out << std::endl;
-    }
   }
   return out;
 }
@@ -142,24 +94,6 @@ short CNFFormula::get_forced_value(unsigned int variable) const{
 int CNFFormula::get_m() const{
   return clauses.size();
 }
-
-bool CNFFormula::is_frozen(int variable, std::vector<short> partial){
-  // bruteforce solves to check if a variable is frozen. quite ugly,
-  // but since PPZ is slow as a tetraplegic turtle anyway... 
-  bruteforce_solve_sat(partial);
-  //if there is no satisfying assignment, the variable has the same value in all sat. assg.
-  if(satisfying_assignments.size() == 0){
-    return true;
-  }
-  short value = satisfying_assignments[0][variable];
-  for(auto const & assig : satisfying_assignments){
-    if(assig[variable] != value){
-      return false;
-    }
-  }
-  return true;
-}
-
 
 CNFFormula::iterator CNFFormula::begin(){
   return clauses.begin();

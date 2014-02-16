@@ -2,6 +2,7 @@
 #include "cnfformula.h"
 #include "ppz.h"
 #include <cmath>
+#include "solvedcnf.h"
 
 int main(){
   using namespace std;
@@ -47,8 +48,8 @@ int main(){
 
   MaxSatGenerator * satgen = new MaxSatGenerator(n, k, assignments);
   CNFFormula f = satgen->generate_sat();
-  f.bruteforce_solve_sat();
-  cout << f;
+  SolvedCNF solf(f);
+  cout << solf;
   Ppz * ppz = new Ppz(&f);
 //  ppz->full_solve_ppz();
 //  ppz->full_solve_ppz(true);

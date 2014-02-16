@@ -14,28 +14,19 @@ class CNFFormula{
     unsigned int k;
     /** clauses of the formula */
     std::vector<CNFClause> clauses;
-    /** indicates if the bruteforce_solve_sat method has been executed on the formula */
-    bool was_solved;
-    /** guessed, unchecked assignments given by the user or the generator.
-        these give no guarantee that they are correct or complete. */
-    std::vector<assignment> unchecked_assignments;
-    /** assignments computed by bruteforce_solve_sat.
-        if was_solved is true, guaranteed to be correct and complete */
-    std::vector<assignment> satisfying_assignments;
 
   public:
     /** creates an empty formula */
     CNFFormula();
 
-    /** creates a CNF formula with the given clauses and assignments, with default empty clause and empty assignment vectors */
-    CNFFormula(unsigned int n, int k, const std::vector<CNFClause> & clauses = std::vector<CNFClause>(0), const std::vector<assignment> assignments  = std::vector<assignment>(0));
+    /** creates a CNF formula with the given clauses and assignments, with default empty clause vector */
+    CNFFormula(unsigned int n, int k, const std::vector<CNFClause> & clauses = std::vector<CNFClause>(0));
 
-    /** solves a CNF formula by brute force - going to all 2^n assignments.
-    assigns satisfying_assignments to contain the satisfying assignments
-    and sets was_solved to true. if was_solved is already set to true then we do
-    not re-solve.*/ 
-    void bruteforce_solve_sat(std::vector<short> partial = std::vector<short>(0));
-
+    /** does the assignment passed in parameter, does not modify the current formula 
+    @param assg the assignment to make - 0 or 1 to corresponding variables, -1 for unassigned variables
+    @return a new CNFFormula with the assignment made */
+    CNFFormula make_assignment(const assignment & assg) const;
+    
     /** checks whether a bitstring solves a CNF formula
     @param bitstring the candidate bit string
     @return true if the bitstring satisfies the formula, false otw */
@@ -47,11 +38,6 @@ class CNFFormula{
 
     /** pretty printer for the formula */
     friend std::ostream& operator<<(std::ostream& out, const CNFFormula & formula);
-
-    /** does the assignment passed in parameter, does not modify the current formula 
-    @param assg the assignment to make - 0 or 1 to corresponding variables, -1 for unassigned variables
-    @return a new CNFFormula with the assignment made */
-    CNFFormula make_assignment(const assignment & assg) const;
 
     /** accessor for private field n (number of variables) */
     unsigned int get_n() const;
@@ -67,27 +53,20 @@ class CNFFormula{
     /** @return the number of clauses of the formula */
     int get_m() const;
 
-    /** checks whether a variable is frozen, i.e. if it has the same value in all the satisfying assignments
-    @return true if the variable is frozen, false otw */
-    bool is_frozen(int variable, std::vector<short> partial);
-
-    /** @return true if the formula has (precomputed) satisfying assignments, false otherwise */
-    bool has_satisfying_assignments(){return satisfying_assignments.size() > 0;}
-
-    /** @return true if the formula was already solved by bruteforce, false otw */
-    bool is_solved(){return was_solved;}
-
-    /** @return the set of computed satisfying assignments */
-    std::vector<assignment> get_satisfying_assignments(){return satisfying_assignments;}
-
     /** save the formula to file in DIMACS format*/
     void save(std::string filename);
 
+    /** iterator over the clauses of the formula */
     typedef std::vector<CNFClause>::iterator iterator;
+    /** const iterator over the clauses of the formula */
     typedef std::vector<CNFClause>::const_iterator const_iterator;
+    /** begin iterator over the clauses of the formula */
     iterator begin();
+    /** begin iterator over the clauses of the formula */
     const_iterator begin() const;
+    /** end iterator over the clauses of the formula */
     iterator end();
+    /** end iterator over the clauses of the formula */
     const_iterator end() const;
 };
 

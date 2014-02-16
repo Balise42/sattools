@@ -5,6 +5,7 @@
 #include "randomsatgenerator.h"
 #include "cnfformula.h"
 #include "cnfclause.h"
+#include "solvedcnf.h"
 
 RandomSatGenerator::RandomSatGenerator(int n, int k, int probrange = 5):SatGenerator(n, k),probrange(probrange){
 }
@@ -31,8 +32,8 @@ CNFFormula RandomSatGenerator::generate_formula(){
 CNFFormula RandomSatGenerator::generate_sat(){
   while(1){
     generate_formula();
-    formula->bruteforce_solve_sat();
-    if(formula->has_satisfying_assignments()){
+    SolvedCNF solf(*formula);
+    if(solf.has_satisfying_assignments()){
       return *formula;
     }
   }

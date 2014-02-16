@@ -6,6 +6,7 @@
 #include "execution.h"
 #include "randomsatgenerator.h"
 #include "maxsatgenerator.h"
+#include "solvedcnf.h"
 
 Execution::Execution():formula_init(false),ppz_init(false){
 }
@@ -77,8 +78,8 @@ void Execution::bruteforce(){
   if(!formula_init){
     throw std::runtime_error("Formula is not initialized");
   }
-  f->bruteforce_solve_sat();
-  std::cout << *f;
+  SolvedCNF solf(*f);
+  std::cout << solf;
 }
 
 void Execution::ppzfull(){
