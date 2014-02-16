@@ -1,25 +1,27 @@
 #include <iostream>
 #include <string>
-#include "execution.h"
+#include <cmath>
 #include "executionmenu.h"
 #include "userinput.h"
 #include "userinputexception.h"
+#include "ppz.h"
+#include "solvedcnf.h"
 
-ExecutionMenu::ExecutionMenu(Execution * ex):ex(ex),ui(new UserInput()){
+ExecutionMenu::ExecutionMenu():ui(new UserInput()){
 }
 
 ExecutionMenu::~ExecutionMenu(){
   delete ui;
 }
 
-void ExecutionMenu::save_formula(){
+void ExecutionMenu::save_formula(const CNFFormula & f) const{
   std::cout << "Input a filename: " << std::endl;
   std::cout << "> ";
   std::string filename = ui->getstring();
-  ex->save(filename);
+  f.save(filename);
 }
 
-void ExecutionMenu::run(){
+void ExecutionMenu::run( CNFFormula & f) {
   while(1){
     std::cout << "Processing formula" << std::endl;
     std::cout << "==================" << std::endl;
@@ -28,12 +30,9 @@ void ExecutionMenu::run(){
     std::cout << "(2) Solve the formula by full PPZ" << std::endl;
     std::cout << "(3) Solve the formula by full oracle PPZ" << std::endl;
     std::cout << "(4) Solve the formula by random PPZ" << std::endl;
-    std::cout << "(5) Clear all PPZ executions" << std::endl;
-    std::cout << "(6) Restart execution with a clean identical formula" << std::endl;
-    std::cout << "(7) Save formula" << std::endl;
-    std::cout << "(8) Print formula info" << std::endl;
-    std::cout << "(9) Print PPZ info" << std::endl;
-    std::cout << "(0) Exit" << std::endl;
+    std::cout << "(5) Print formula" << std::endl;
+    std::cout << "(6) Save formula" << std::endl; 
+    std::cout << "(7) Exit" << std::endl;
 
     char choice;
     try{
@@ -44,38 +43,45 @@ void ExecutionMenu::run(){
       continue;
     }
 
+    Ppz * ppz = new Ppz(&f);
+
     switch(choice){
       case '1':
-        ex->bruteforce();
+        {
+        SolvedCNF * solf = new SolvedCNF(f);
+        std::cout << *solf << std::endl;
+        delete solf;
         break;
+        }
       case '2':
-        ex->ppzfull();
+        ppz->full_solve_ppz();
+        std::cout << *ppz << std::endl;
+        delete ppz;
         break;
       case '3':
-        ex->ppzfulloracle();
+        ppz->full_solve_ppz(true);
+        std::cout << *ppz << std::endl;
+        delete ppz;
         break;
       case '4':
-        ex->ppzrandom();
+        {
+        ppz->full_solve_ppz(true);
+        double limit = pow(2, f.get_n()-1.0/f.get_k());
+        ppz->random_solve_ppz(limit);
+        delete ppz;
         break;
+        }
       case '5':
-        ex->clearppz();
+        std::cout << f;
         break;
       case '6':
-        ex->restart();
+        save_formula(f);
         break;
       case '7':
-        save_formula();
-        break;
-      case '8':
-        ex->print_formula();
-        break;
-      case '9':
-        ex->print_ppz();
-        break;
-      case '0':
         return;
+        break;
       default:
-        std::cout << "Please choose a valid option [0-9]" << std::endl;
+        std::cout << "Please choose a valid option [0-7]" << std::endl;
         break;
     }
   }

@@ -8,7 +8,7 @@ GENERATE_OBJECTS=$(addprefix $(BUILDDIR)/,cnfclause.o cnfformula.o generate_sat_
 PPZ_OBJECTS=$(addprefix $(BUILDDIR)/,cnfclause.o cnfformula.o satgenerator.o ppz.o ppz_tool.o maxsatgenerator.o ppzrunstats.o solvedcnf.o)
 PPZ_RANDOM_OBJECTS=$(addprefix $(BUILDDIR)/,cnfclause.o cnfformula.o satgenerator.o ppz.o randomsatgenerator.o ppz_random_tool.o ppzrunstats.o solvedcnf.o)
 DIMACS_OBJECTS=$(addprefix $(BUILDDIR)/,cnfclause.o cnfformula.o satgenerator.o dimacsgenerator.o dimacs_tool.o solvedcnf.o)
-SATTOOLS_OBJECTS=$(addprefix $(BUILDDIR)/,cnfclause.o cnfformula.o satgenerator.o dimacsgenerator.o sattools.o ppz.o randomsatgenerator.o maxsatgenerator.o ppzrunstats.o commandline.o interactivemode.o execution.o formulacreationmenu.o userinput.o executionmenu.o solvedcnf.o)
+SATTOOLS_OBJECTS=$(addprefix $(BUILDDIR)/,cnfclause.o cnfformula.o satgenerator.o dimacsgenerator.o sattools.o ppz.o randomsatgenerator.o maxsatgenerator.o ppzrunstats.o commandline.o interactivemode.o formulacreationmenu.o userinput.o executionmenu.o solvedcnf.o)
 OBJS=$(GENERATE_OBJECTS) $(PPZ_OBJECTS) $(DIMACS_OBJECTS) $(SATTOOLS_OBJECTS)
 LIBS=-lboost_program_options
 # Points to the root of Google Test, relative to where this file is.

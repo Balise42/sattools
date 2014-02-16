@@ -1,20 +1,30 @@
 #include "interactivemode.h"
-#include "execution.h"
 #include "formulacreationmenu.h"
 #include "executionmenu.h"
+#include "cnfformula.h"
+#include <exception>
 
-InteractiveMode::InteractiveMode():ex(new Execution()){
+InteractiveMode::InteractiveMode(){
 }
 
 InteractiveMode::~InteractiveMode(){
-  delete ex;
 }
 
 void InteractiveMode::start(){
-  while(!ex->is_formula_init()){
-    FormulaCreationMenu * fcm = new FormulaCreationMenu(ex);
-    fcm->run();
-  }
-  ExecutionMenu * em = new ExecutionMenu(ex);
-  em->run();
+  CNFFormula f;
+  FormulaCreationMenu * fcm = new FormulaCreationMenu();
+  while(1){
+    try{
+      fcm->run(f);
+      break;
+    }
+    catch(std::exception e){
+      std::cout << e.what() << std::endl;
+    }
+  } 
+  delete fcm;
+
+  ExecutionMenu * em = new ExecutionMenu();
+  em->run(f);
+  delete em;
 }

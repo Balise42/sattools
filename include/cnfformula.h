@@ -57,7 +57,7 @@ class CNFFormula{
     int get_m() const;
 
     /** save the formula to file in DIMACS format*/
-    void save(std::string filename);
+    void save(std::string filename) const;
 
     /** iterator over the clauses of the formula */
     typedef std::vector<CNFClause>::iterator iterator;

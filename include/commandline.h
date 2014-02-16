@@ -4,7 +4,6 @@
 #include <boost/program_options.hpp>
 #include "cnfformula.h"
 #include "ppz.h"
-#include "execution.h"
 
 namespace po = boost::program_options;
 

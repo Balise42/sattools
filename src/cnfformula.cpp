@@ -115,7 +115,7 @@ CNFFormula::const_iterator CNFFormula::end() const{
   return clauses.end();
 }
 
-void CNFFormula::save(std::string filename){
+void CNFFormula::save(std::string filename) const{
   std::ofstream file;
   file.open(filename, std::ios::out | std::ios::trunc);
   if(!file.is_open()){

@@ -41,7 +41,7 @@ class Ppz{
 
   public:
     /** default constructor */
-    Ppz(CNFFormula * formula);
+    Ppz(CNFFormula * formula );
     /** destructor */
     ~Ppz();
     /** runs ppz up to "limit" times on random permutation and random bitstring

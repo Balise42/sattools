@@ -1,12 +1,17 @@
 #include <iostream>
 #include <vector>
-#include "execution.h"
+#include "cnfformula.h"
 #include "formulacreationmenu.h"
 #include "userinput.h"
 #include "userinputexception.h"
 #include "structs.h"
+#include "dimacsgenerator.h"
+#include "maxsatgenerator.h"
+#include "randomsatgenerator.h"
+#include "solvedcnf.h"
 
-FormulaCreationMenu::FormulaCreationMenu(Execution * ex):ex(ex),ui(new UserInput()){
+
+FormulaCreationMenu::FormulaCreationMenu():ui(new UserInput()){
 }
 
 FormulaCreationMenu::~FormulaCreationMenu(){
@@ -41,20 +46,20 @@ void FormulaCreationMenu::ask_n(){
   }
 }
 
-void FormulaCreationMenu::create_file_formula(){
+void FormulaCreationMenu::create_file_formula(CNFFormula & f) {
   ask_k();
   std::cout << "Where is your formula file?" << std::endl;
   std::cout << "> ";
   std::string filename = ui->getstring();
-  try{
-    ex->get_file_formula(filename, k);
+  std::ifstream file(filename);
+  if(!file.is_open()){
+    throw std::invalid_argument("File does not exist");
   }
-  catch(std::invalid_argument e){
-    std::cout << e.what() << std::endl;
-  }
+  DimacsGenerator dg(file, k);
+  f = dg.generate_sat(); 
 }
 
-void FormulaCreationMenu::create_random_formula(){
+void FormulaCreationMenu::create_random_formula(CNFFormula & f) {
   ask_k();
   ask_n();
   int p;
@@ -69,10 +74,11 @@ void FormulaCreationMenu::create_random_formula(){
       std::cout << e.what() << std::endl;
     }
   }
-  ex->get_random_formula(n, k, p);
+  RandomSatGenerator rg(n, k, p);
+  f = rg.generate_formula();
 }
 
-void FormulaCreationMenu::create_max_formula(){
+void FormulaCreationMenu::create_max_formula(CNFFormula & f) {
   ask_k();
   ask_n();
   int numassg;
@@ -103,10 +109,11 @@ void FormulaCreationMenu::create_max_formula(){
       }
     }
   }
-  ex->get_max_formula(n, k, assignments);
+  MaxSatGenerator mg(n, k, assignments);
+  f = mg.generate_sat();
 }
 
-void FormulaCreationMenu::run(){
+bool FormulaCreationMenu::run(CNFFormula & f){
   std::cout << "Formula creation" << std::endl;
   std::cout << "================" << std::endl << std::endl;
   std::cout << "Choose an option." << std::endl;
@@ -118,25 +125,24 @@ void FormulaCreationMenu::run(){
   std::cout << "> ";
 
   char choice;
-  try{
-    choice = ui->getchar();
-  }
-  catch(UserInputException e){
-    std::cout << e.what() << std::endl;
-    return;
-  }
+  choice = ui->getchar();
+ 
   switch(choice){
     case '1':
-      create_file_formula();
+      create_file_formula(f);
+      return true;
       break;
     case '2':
-      create_random_formula();
+      create_random_formula(f);
+      return true;
       break;
     case '3':
-      create_max_formula();
+      create_max_formula(f);
+      return true;
       break;
     default:
       std::cout << "Please choose a valid option [1-3]" << std::endl;
+      return false;
       break;
   }
 }
