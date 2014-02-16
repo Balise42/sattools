@@ -10,8 +10,6 @@ SatGenerator::~SatGenerator(){
   delete formula;
 }
 
-/** generate all sets of k variables among n variables
-    @return a vector of size "n choose k" of vector of size n with k bits set to 1 */
 std::vector<std::vector<short> > SatGenerator::generate_permutations(){
   std::vector<short> initperm(n, 0);
   std::vector<std::vector<short> > permutations;
@@ -25,10 +23,6 @@ std::vector<std::vector<short> > SatGenerator::generate_permutations(){
   return permutations;
 }
 
-/** generate all clauses corresponding to a given set of variables
-    @param permutation the set of variables to use (vector of size n where k bits are set to 1
-    @param start used for the recursive works only, user should not set it (default to 0)
-    @return all the clauses corresponding to the permutation - 2^k possibilities */
 std::vector<CNFClause> SatGenerator::generate_clauses(const std::vector<short> & permutation, int start){
   std::vector<CNFClause> clauses;
   for(unsigned int i = start; i<n; i++){

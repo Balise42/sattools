@@ -38,6 +38,7 @@ assignment UserInput::getassignment(unsigned int n){
     throw UserInputException("An assignment must contain exactly n chacracters");
   }
   assignment a;
+  // checks bit by bit that the assignment is a set of 0s1s - creates the assignment 
   for(const auto & ch : input){
     if(ch == '0'){
       a.push_back(0);

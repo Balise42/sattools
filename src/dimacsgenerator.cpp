@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <stdexcept>
 
 DimacsGenerator::DimacsGenerator(std::ifstream & file, int k):SatGenerator(0,k){
   unsigned int nn, m;
@@ -34,11 +35,13 @@ DimacsGenerator::DimacsGenerator(std::ifstream & file, int k):SatGenerator(0,k){
         std::vector<int> clausespec;
         int lit;
         while(1){
-          ss >> lit;
-          if(lit == 0){
-            break;
+          if(ss >> lit){
+            if(lit == 0){
+              break;
+            }
+            clausespec.push_back(lit);
           }
-          clausespec.push_back(lit);
+          else throw std::invalid_argument("File is not a valid DIMACS file");
         }
         CNFClause clause(clausespec);
         formula->add_clause(clause);

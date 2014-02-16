@@ -2,11 +2,6 @@
 #include <algorithm>
 #include "maxsatgenerator.h"
 
-/** default constructor, creates the object and makes default assignments 
-    @param n number of variables
-    @param k number of literals in the generated clauses 
-    @param nsat number of satisfying assignments
-    @param assignments the satisfying assignments for which we want a formula */
 MaxSatGenerator::MaxSatGenerator(unsigned int n, unsigned int k, const std::vector<assignment> & assignments):SatGenerator(n,k), assignments(assignments){
 }
 

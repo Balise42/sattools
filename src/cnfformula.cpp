@@ -6,16 +6,11 @@
 #include "cnfformula.h"
 #include "structs.h"
 
-/** creates a CNF formula with the given clauses and assignments, with default empty clause and empty assignment vectors */
 CNFFormula::CNFFormula(unsigned int n, int k, const std::vector<CNFClause> & clauses, const std::vector<assignment> assignments):n(n), k(k), clauses(clauses),unchecked_assignments(assignments){
 }
 
 CNFFormula::CNFFormula(){}
 
-/** solves a CNF formula by brute force - going to all 2^n assignments.
-    assigns satisfying_assignments to contain the satisfying assignments
-    and sets was_solved to true. if was_solved is already set to true then we do
-    not re-solve.*/
 void CNFFormula::bruteforce_solve_sat(std::vector<short> partial){
   // we don't want to re-solve if it has already been solved
   if(was_solved){
@@ -52,10 +47,8 @@ void CNFFormula::bruteforce_solve_sat(std::vector<short> partial){
   was_solved = true;
 }
 
-/** checks whether a bitstring solves a CNF formula
-    @param bitstring the candidate bit string
-    @return true if the bitstring satisfies the formula, false otw */
 bool CNFFormula::check_bitstring(const std::vector<short> & bitstring) const {
+  //we just check if it satisfies all clauses
   for(const auto & clause : clauses){
     if(!clause.check_bitstring(bitstring)){
       return false;
@@ -63,9 +56,6 @@ bool CNFFormula::check_bitstring(const std::vector<short> & bitstring) const {
   }
   return true;
 }
-
-/** adds a clause to the formula
-    @param clause the clause to add */
 
 void CNFFormula::add_clause(const CNFClause & clause){
   clauses.push_back(clause);
@@ -90,11 +80,7 @@ std::ostream& operator<<(std::ostream& out, const CNFFormula & formula){
   return out;
 }
 
-/** does the assignment passed in parameter, does not modify the current formula 
-    @param assg the assignment to make - 0 or 1 to corresponding variables, -1 for unassigned variables
-    @ return a new CNFFormula with the assignment made */
 CNFFormula CNFFormula::make_assignment(const assignment & assg) const {
-//  assert(assg.size() == n);
   CNFFormula formula(n, k);
   for(const auto & clause : clauses){
     bool addit = true;
@@ -157,9 +143,9 @@ int CNFFormula::get_m() const{
   return clauses.size();
 }
 
-/** bruteforce solves to check if a variable is frozen. quite ugly,
-    but since PPZ is slow as a tetraplegic turtle anyway... */
 bool CNFFormula::is_frozen(int variable, std::vector<short> partial){
+  // bruteforce solves to check if a variable is frozen. quite ugly,
+  // but since PPZ is slow as a tetraplegic turtle anyway... 
   bruteforce_solve_sat(partial);
   //if there is no satisfying assignment, the variable has the same value in all sat. assg.
   if(satisfying_assignments.size() == 0){
@@ -197,7 +183,9 @@ void CNFFormula::save(std::string filename){
   if(!file.is_open()){
     return;
   }
+  // header of the file
   file << "p cnf " << n << " " << get_m() << std::endl;
+  //print all clauses one by one
   for(const auto & clause : clauses){
     clause.save(file);
   }
