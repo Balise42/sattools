@@ -13,7 +13,8 @@ RandomSatGenerator::RandomSatGenerator(int n, int k, int probrange = 5):SatGener
 RandomSatGenerator::~RandomSatGenerator(){
 }
 
-CNFFormula RandomSatGenerator::generate_formula(){
+void RandomSatGenerator::generate_formula(CNFFormula & f){
+  f = CNFFormula(n, k);
   std::random_device rd;
   std::mt19937 gen(rd());
   std::uniform_int_distribution<> dis(1,probrange);
@@ -22,19 +23,18 @@ CNFFormula RandomSatGenerator::generate_formula(){
     std::vector<CNFClause> allclauses = generate_clauses(permutation);
     for(const auto & clause : allclauses){
       if(dis(gen) == 1){
-        formula->add_clause(clause);
+        f.add_clause(clause);
       }
     }
   }
-  return *formula;
 }
 
-CNFFormula RandomSatGenerator::generate_sat(){
+void RandomSatGenerator::generate_sat(CNFFormula & f){
   while(1){
-    generate_formula();
-    SolvedCNF solf(*formula);
+    generate_formula(f);
+    SolvedCNF solf(f);
     if(solf.has_satisfying_assignments()){
-      return *formula;
+      break;
     }
   }
 }

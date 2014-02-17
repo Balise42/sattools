@@ -16,7 +16,7 @@ class RandomSatGenerator:public SatGenerator {
     /** destructor */
     ~RandomSatGenerator();
     /** generates a random formula given the parameters */
-    CNFFormula generate_formula();
+    void generate_formula(CNFFormula & f);
     /** loops the formula generation until it finds a satisfiable formula */
-    CNFFormula generate_sat();
+    void generate_sat(CNFFormula & f);
 };

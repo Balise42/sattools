@@ -1,4 +1,3 @@
-#include <fstream>
 #include "dimacsgenerator.h"
 #include <iostream>
 #include <string>
@@ -11,10 +10,9 @@ int main(){
   int k;
   cout << "What is k in that file?" << endl << "> ";
   cin >> k;
-  ifstream file(filename);
-  if(file.is_open()){
-    DimacsGenerator dg(file, k);
-    cout << dg.generate_sat() << endl;
-  }
+  CNFFormula f;
+  DimacsGenerator dg(filename, k);
+  cout << dg.generate_sat(f) << endl;
+  
 }
 

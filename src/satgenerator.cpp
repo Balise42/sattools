@@ -3,11 +3,10 @@
 #include "satgenerator.h"
 #include "cnfformula.h"
 
-SatGenerator::SatGenerator(unsigned int n, unsigned int k):n(n),k(k), formula(new CNFFormula(n, k)){
+SatGenerator::SatGenerator(unsigned int n, unsigned int k):n(n),k(k){
 }
 
 SatGenerator::~SatGenerator(){
-  delete formula;
 }
 
 std::vector<std::vector<short> > SatGenerator::generate_permutations(){

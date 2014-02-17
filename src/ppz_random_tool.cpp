@@ -22,7 +22,8 @@ int main(){
   cin >> prob;
 
   RandomSatGenerator * satgen = new RandomSatGenerator(n, k, prob);
-  CNFFormula f = satgen->generate_formula();
+  CNFFormula f;
+  satgen->generate_formula(f);
   SolvedCNF solf(f);
   cout << solf;
   Ppz * ppz = new Ppz(&f);

@@ -48,14 +48,8 @@ void CommandLine::parse_file_options(CNFFormula & f){
   }
   std::string filename = (*vm)["file"].as<std::string>();
   unsigned int k = (*vm)["k"].as<unsigned int>();
-  std::ifstream file(filename);
-  if(file.is_open()){
-    DimacsGenerator dg(file, k);
-    f = dg.generate_sat();
-  }
-  else{
-    throw std::invalid_argument("File does not exist");
-  }
+  DimacsGenerator dg(filename, k);
+  dg.generate_sat(f);
 }
 
 void CommandLine::parse_random(CNFFormula & f){
@@ -67,7 +61,7 @@ void CommandLine::parse_random(CNFFormula & f){
   unsigned int k = (*vm)["k"].as<unsigned int>();
   unsigned int p = (*vm)["random"].as<unsigned int>();
   RandomSatGenerator rg(n, k, p);
-  f = rg.generate_formula();
+  rg.generate_formula(f);
 }
 
 void CommandLine::parse_max(CNFFormula & f){
@@ -100,7 +94,7 @@ void CommandLine::parse_max(CNFFormula & f){
     assignments.push_back(a);
   }
   MaxSatGenerator mg(n, k, assignments);
-  f = mg.generate_sat();
+  mg.generate_sat(f);
 }
 
 void CommandLine::parse_and_exec(){

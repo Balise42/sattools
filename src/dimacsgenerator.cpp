@@ -4,55 +4,50 @@
 #include <string>
 #include <vector>
 #include <stdexcept>
+#include "cnfformula.h"
 
-DimacsGenerator::DimacsGenerator(std::ifstream & file, int k):SatGenerator(0,k){
-  unsigned int nn, m;
-  if(file.is_open()){
-    std::string line;
-    bool reading_clauses = false;
-    while(getline(file, line)){
-      std::stringstream ss;
-      ss << line;
-      if(!reading_clauses){
-        char c;
-        ss >> c;
-        if(c == 'c'){
-          continue;    
-        }
-        else if(c == 'p'){
-          std::string cnf;
-          ss >> cnf;
-          ss >> nn;
-          ss >> m;
-          formula = new CNFFormula(nn, k);
-          reading_clauses = true;
-        }
-        else{
-          return;
-        }
-      }
-      else{
-        std::vector<int> clausespec;
-        int lit;
-        while(1){
-          if(ss >> lit){
-            if(lit == 0){
-              break;
-            }
-            clausespec.push_back(lit);
-          }
-          else throw std::invalid_argument("File is not a valid DIMACS file");
-        }
-        CNFClause clause(clausespec);
-        formula->add_clause(clause);
-      }
-    }
-  }
-  else{
-    return;
-  }
+DimacsGenerator::DimacsGenerator(std::string filename, unsigned int k):SatGenerator(0,k),filename(filename){
 }
 
-CNFFormula DimacsGenerator::generate_sat(){
-  return *formula;
+void DimacsGenerator::generate_sat(CNFFormula & f){
+  char c;
+  std::ifstream file(filename);
+  std::string line;
+  while(1){
+    c = file.peek();
+    if(!getline(file, line)){
+      break;
+    }
+    if(c == 'c'){
+      continue;
+    }
+
+    std::stringstream ss;
+    ss << line;
+
+    if(c == 'p'){
+      std::string cnf;
+      ss >> cnf;
+      ss >> cnf;
+      if(!(ss >> n)){
+        throw std::invalid_argument("File is not a valid DIMACS file (header invalid)");
+      }
+      f = CNFFormula(n, k);
+    }
+    else{
+      std::vector<int> clausespec;
+      int lit;
+      while(1){
+        if(ss >> lit){
+          if(lit == 0){
+            break;
+          }
+          clausespec.push_back(lit);
+        }
+        else throw std::invalid_argument("File is not a valid DIMACS file (clause invalid)");
+      }
+      CNFClause clause(clausespec);
+      f.add_clause(clause);
+    }
+  }
 }

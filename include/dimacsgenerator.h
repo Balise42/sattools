@@ -9,12 +9,14 @@
 
 /** A very very basic DIMACS parser. Only parses for cnf formulas. */
 class DimacsGenerator : public SatGenerator{
+  private:
+    std::string filename;
   public:
     /** constructor - reads the formula from the file and creates it
      @param file the file to read
      @param k arity of a clause */
-    DimacsGenerator(std::ifstream & file, int k);
+    DimacsGenerator(std::string filename, unsigned int k);
     /** @return sat formula from the file */
-    CNFFormula generate_sat();
+    void generate_sat(CNFFormula & f);
 };
 #endif

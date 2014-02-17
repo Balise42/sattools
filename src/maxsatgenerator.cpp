@@ -8,17 +8,17 @@ MaxSatGenerator::MaxSatGenerator(unsigned int n, unsigned int k, const std::vect
 MaxSatGenerator::~MaxSatGenerator(){
 }
 
-CNFFormula MaxSatGenerator::generate_sat(){
+void MaxSatGenerator::generate_sat(CNFFormula & f){
+  f = CNFFormula(n,k);
   std::vector<std::vector<short> > permutations = generate_permutations();
   for(const auto & permutation : permutations){
     std::vector<CNFClause> allclauses = generate_clauses(permutation);
     for(const auto & clause : allclauses){
       if(check_clause(clause)){
-        formula->add_clause(clause);
+        f.add_clause(clause);
       }
     }
   }
-  return *formula;
 }
 
 bool MaxSatGenerator::check_clause(const CNFClause & clause){

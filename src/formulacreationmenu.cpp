@@ -51,12 +51,8 @@ void FormulaCreationMenu::create_file_formula(CNFFormula & f) {
   std::cout << "Where is your formula file?" << std::endl;
   std::cout << "> ";
   std::string filename = ui->getstring();
-  std::ifstream file(filename);
-  if(!file.is_open()){
-    throw std::invalid_argument("File does not exist");
-  }
-  DimacsGenerator dg(file, k);
-  f = dg.generate_sat(); 
+  DimacsGenerator dg(filename, k);
+  dg.generate_sat(f); 
 }
 
 void FormulaCreationMenu::create_random_formula(CNFFormula & f) {
@@ -75,7 +71,7 @@ void FormulaCreationMenu::create_random_formula(CNFFormula & f) {
     }
   }
   RandomSatGenerator rg(n, k, p);
-  f = rg.generate_formula();
+  rg.generate_formula(f);
 }
 
 void FormulaCreationMenu::create_max_formula(CNFFormula & f) {
@@ -110,7 +106,7 @@ void FormulaCreationMenu::create_max_formula(CNFFormula & f) {
     }
   }
   MaxSatGenerator mg(n, k, assignments);
-  f = mg.generate_sat();
+  mg.generate_sat(f);
 }
 
 bool FormulaCreationMenu::run(CNFFormula & f){

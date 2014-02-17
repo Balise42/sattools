@@ -24,7 +24,7 @@ class MaxSatGenerator:public SatGenerator{
     /** default destructor */
     ~MaxSatGenerator();
     /** generate all clauses and put the valid one in the returned formula */
-    CNFFormula generate_sat();
+    void generate_sat(CNFFormula & f);
 };
 
 #endif

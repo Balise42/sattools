@@ -9,11 +9,9 @@
 class SatGenerator{
   protected:
     /** number of variables */
-    const unsigned int n;
+    unsigned int n;
     /** max number of literals in a clause ("k-SAT") / arity of a clause */
     const unsigned int k;
-    /** resulting formula */
-    CNFFormula * formula;
     /** generate all sets of k variables among n variables
       @return a vector of size "n choose k" of vector of size n with k bits set to 1 */
     std::vector<std::vector<short> > generate_permutations();
@@ -28,7 +26,7 @@ class SatGenerator{
     /** destructor */
     ~SatGenerator();
     /** virtual - needs to be implemented by generator - returns a generated formula */
-    virtual CNFFormula generate_sat()=0;
+    virtual void generate_sat(CNFFormula & f)=0;
 };
 
 #endif
