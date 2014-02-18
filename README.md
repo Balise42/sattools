@@ -14,6 +14,7 @@ The PPZ algorithm was first described in the paper Satisfiability Coding Lemma b
 The main executable is "sattools". The other executables (dimacs_tool, generate_sat_tool, ppz_random_tool and ppz_tool) are older tentatives and should be deprecated at some point.
 
 Options for "sattools"
+
     -h [ --help ]           Print help message
     -n [ --n ] arg          Number of variables
     -k [ --k ] arg          Arity of a clause
