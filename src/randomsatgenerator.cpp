@@ -1,3 +1,4 @@
+/* Formula generators: create a formula by generating all clauses and picking some of them according to the given probability*/
 #include <vector>
 #include <algorithm>
 #include <random>

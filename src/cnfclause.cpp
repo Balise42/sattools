@@ -1,3 +1,4 @@
+/* Basic structures: Class for CNF clauses (disjunction of literals) */
 #include <vector>
 #include <cstdlib>
 #include <iostream>

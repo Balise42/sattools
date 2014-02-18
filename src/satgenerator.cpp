@@ -1,3 +1,4 @@
+/* Formular generators: parent class for the other generators */
 #include <vector>
 #include <algorithm>
 #include "satgenerator.h"

@@ -1,3 +1,4 @@
+/* Formula generators: create a formula from a set of satisfying assignments by checking all possible clauses and inserting the ones that are compatible with the satisfying assignments*/
 #include <vector>
 #include <algorithm>
 #include "maxsatgenerator.h"

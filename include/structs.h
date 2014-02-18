@@ -1,3 +1,4 @@
+/* Basic structures: Small data structures that do not need any methods attached to them */
 #ifndef STRUCTS_H
 #define STRUCTS_H 1
 

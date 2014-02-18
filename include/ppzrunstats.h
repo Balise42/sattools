@@ -30,16 +30,16 @@ class PpzRunStats {
     unsigned int maxforced_u;
     /** minimum number of forced variables for unsatisfying runs */
     unsigned int minforced_u;
-    /** number of forced variables in the current run */
-    unsigned int tmpforced;
 
     /** default constructor*/
     PpzRunStats();
     /** prettyprint */
     friend std::ostream & operator<<(std::ostream & out, const PpzRunStats & stats);
 
-    /** adds the current number of forced variables to the correct category*/
-    void tally_stats(bool satisfying);
+    /** adds the current number of forced variables to satisfying run stats */
+    void record_success(unsigned int forced);
+    /** adds the current number of forced variables to unsatisfying run stats */
+    void record_failure(unsigned int forced);
 };
 
 #endif

@@ -1,3 +1,4 @@
+/* DEPRECATED - proof of concept for random sat generator*/
 #include "randomsatgenerator.h"
 #include <cmath>
 #include "cnfformula.h"
@@ -26,7 +27,7 @@ int main(){
   satgen->generate_formula(f);
   SolvedCNF solf(f);
   cout << solf;
-  Ppz * ppz = new Ppz(&f);
+  Ppz * ppz = new Ppz(f);
 //  ppz->full_solve_ppz();
 //  ppz->full_solve_ppz(true);
   double limit = pow(2, n-1.0/k);

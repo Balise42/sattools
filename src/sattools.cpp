@@ -1,3 +1,4 @@
+/* Main executable - just invokes the command line parsing */
 #include "commandline.h"
 
 int main(int argc, char** argv){

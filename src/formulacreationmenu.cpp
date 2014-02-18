@@ -1,3 +1,4 @@
+/* Menu: menu used by the interactive mode to create a formula */
 #include <iostream>
 #include <vector>
 #include "cnfformula.h"
@@ -21,9 +22,7 @@ FormulaCreationMenu::~FormulaCreationMenu(){
 void FormulaCreationMenu::ask_k(){
   while(1){
     try{
-      std::cout << "What is k? (maximum arity of the clauses)" << std::endl;
-      std::cout << "> ";
-      k = ui->getint();
+      k = ui->getint("What is k? (maximum arity of the clauses)");
       break;
     }
     catch(UserInputException e){
@@ -35,9 +34,7 @@ void FormulaCreationMenu::ask_k(){
 void FormulaCreationMenu::ask_n(){
   while(1){
     try{
-      std::cout << "What is n? (number of variables of the formula)" << std::endl;
-      std::cout << "> ";
-      n = ui->getint();
+      n = ui->getint("What is n? (number of variables of the formula)");
       break;
     }
     catch(UserInputException e){
@@ -48,9 +45,7 @@ void FormulaCreationMenu::ask_n(){
 
 void FormulaCreationMenu::create_file_formula(CNFFormula & f) {
   ask_k();
-  std::cout << "Where is your formula file?" << std::endl;
-  std::cout << "> ";
-  std::string filename = ui->getstring();
+  std::string filename = ui->getstring("Where is your formula file?");
   DimacsGenerator dg(filename, k);
   dg.generate_sat(f); 
 }
@@ -61,9 +56,7 @@ void FormulaCreationMenu::create_random_formula(CNFFormula & f) {
   int p;
   while(1){
     try{
-      std::cout << "What is 1/p? (fraction of the clauses that we use - enter 5 to pick clauses with probability 1/5)" << std::endl;
-      std::cout << "> ";
-      p = ui->getint();
+      p = ui->getint("What is 1/p? (fraction of the clauses that we use - enter 5 to pick clauses with probability 1/5)");
       break;
     }
     catch(UserInputException e){
@@ -80,9 +73,7 @@ void FormulaCreationMenu::create_max_formula(CNFFormula & f) {
   int numassg;
   while(1){
     try{
-      std::cout << "How many satisfying assignments does this formula have?" << std::endl;
-      std::cout << "> ";
-      numassg = ui->getint();
+      numassg = ui->getint("How many satisfying assignments does this formula have?");
       break;
     }
     catch(UserInputException e){
@@ -95,9 +86,7 @@ void FormulaCreationMenu::create_max_formula(CNFFormula & f) {
   for(int i = 0; i<numassg; i++){
     while(1){
       try{
-        std::cout << "Assignment #" << i+1 << "?" << std::endl;
-        std::cout << "> ";
-        assignments[i] = ui->getassignment(n);
+        assignments[i] = ui->getassignment(n,std::string("Assignment #").append(std::to_string(i+1)).append("?"));
         break;
       } 
       catch(UserInputException e){
@@ -117,11 +106,9 @@ bool FormulaCreationMenu::run(CNFFormula & f){
   std::cout << "(2) random formula" << std::endl;
   std::cout << "(3) maximum formula for a set of assignments" << std::endl << std::endl;
 
-  std::cout << "Your choice?" << std::endl;
-  std::cout << "> ";
 
   char choice;
-  choice = ui->getchar();
+  choice = ui->getchar("Your choice?");
  
   switch(choice){
     case '1':

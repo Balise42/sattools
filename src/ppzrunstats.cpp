@@ -1,31 +1,33 @@
+/* Basic structures:  PPZ statistics for a run */
 #include <iostream>
 #include <climits>
 #include "ppzrunstats.h"
 
 
-PpzRunStats::PpzRunStats():all_cases(0),satisfying_cases(0),forced_a(0),maxforced_a(0),minforced_a(UINT_MAX),forced_s(0),maxforced_s(0),minforced_s(UINT_MAX),forced_u(0),maxforced_u(0),minforced_u(UINT_MAX),tmpforced(0){
+PpzRunStats::PpzRunStats():all_cases(0),satisfying_cases(0),forced_a(0),maxforced_a(0),minforced_a(UINT_MAX),forced_s(0),maxforced_s(0),minforced_s(UINT_MAX),forced_u(0),maxforced_u(0),minforced_u(UINT_MAX){
 }
 
-void PpzRunStats::updateminmax(unsigned int tmp, unsigned int & maxforced, unsigned int & minforced, unsigned int & total){
-  total += tmp;
-  if(tmp > maxforced){
-    maxforced = tmp;
+void PpzRunStats::updateminmax(unsigned int forced, unsigned int & maxforced, unsigned int & minforced, unsigned int & total){
+  total += forced;
+  if(forced > maxforced){
+    maxforced = forced;
   }
-  if(tmp < minforced){
-    minforced = tmp;
+  if(forced < minforced){
+    minforced = forced;
   }
 }
 
-void PpzRunStats::tally_stats(bool satisfying){
+void PpzRunStats::record_success(unsigned int forced){
   all_cases++;
-  updateminmax(tmpforced, maxforced_a, minforced_a, forced_a);
-  if(satisfying){
-    satisfying_cases++;
-    updateminmax(tmpforced, maxforced_s, minforced_s, forced_s);
-  }
-  else{
-    updateminmax(tmpforced, maxforced_u, minforced_u, forced_u);
-  }
+  updateminmax(forced, maxforced_a, minforced_a, forced_a);
+  satisfying_cases++;
+  updateminmax(forced, maxforced_s, minforced_s, forced_s);
+}
+
+void PpzRunStats::record_failure(unsigned int forced){
+  all_cases++;
+  updateminmax(forced, maxforced_a, minforced_a, forced_a);
+  updateminmax(forced, maxforced_u, minforced_u, forced_u);
 }
 
 std::ostream & operator<<(std::ostream & out, const PpzRunStats & s){

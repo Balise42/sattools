@@ -1,3 +1,4 @@
+/* Formula generators:  reads a formula from a simplified DIMACS file (see http://www.satcompetition.org/2009/format-benchmarks2009.html) */
 #include "dimacsgenerator.h"
 #include <fstream>
 #include <sstream>

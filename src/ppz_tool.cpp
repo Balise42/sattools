@@ -1,3 +1,4 @@
+/* DEPRECATED - proof of concept for ppz */
 #include "maxsatgenerator.h"
 #include "cnfformula.h"
 #include "ppz.h"
@@ -47,10 +48,11 @@ int main(){
   }
 
   MaxSatGenerator * satgen = new MaxSatGenerator(n, k, assignments);
-  CNFFormula f = satgen->generate_sat();
+  CNFFormula f;
+  satgen->generate_sat(f);
   SolvedCNF solf(f);
   cout << solf;
-  Ppz * ppz = new Ppz(&f);
+  Ppz * ppz = new Ppz(f);
 //  ppz->full_solve_ppz();
 //  ppz->full_solve_ppz(true);
 //  cout << *ppz;

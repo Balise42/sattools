@@ -37,14 +37,14 @@ Options for "sattools"
 * Main executable
   * sattools.cpp: just invokes the command line parsing
   * commandline.cpp: command line parsing and dispatching
-  * interactivemode.cpp: tiny console for execution
-  * execution.cpp: dispatcher of commands to the core algorithms
+  * interactivemode.cpp: tiny console for formula creation and runs
 * Basic structures
   * structs.h: small data structures that do not need any methods attached to them (namely, literals and assignments)
   * cnfclause.cpp: a CNF clause (disjunction of literals)
-  * cnfformula.cpp: a CNF formula. Also contains algorithms for bruteforce solving and checking for frozen variables.
+  * cnfformula.cpp: a CNF formula.
+  * solvedcnf.cpp: a solved CNF formula (by bruteforce) - also allows checking for frozen variables.
   * ppz.cpp: PPZ algorithm implementations (full, full with oracle, random)
-  * ppzrunstats.cpp: PPZ statistics for a run (to compare with/without oracle)
+  * ppzrunstats.cpp: PPZ statistics for a run
   * userinput.cpp: manages user input from interactive mode/console
 * Formula generators
   * satgenerator.cpp: parent class for the other generators

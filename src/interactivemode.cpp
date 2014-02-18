@@ -1,3 +1,4 @@
+/* Main executable: Tiny console for formula creation and runs */
 #include "interactivemode.h"
 #include "formulacreationmenu.h"
 #include "executionmenu.h"

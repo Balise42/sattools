@@ -1,3 +1,4 @@
+/* DEPRECATED - proof of concept for max sat generator*/
 #include "maxsatgenerator.h"
 #include "cnfformula.h"
 
@@ -44,6 +45,7 @@ int main(){
   }
 
   MaxSatGenerator * satgen = new MaxSatGenerator(n, k, assignments);
-  CNFFormula f = satgen->generate_sat();
+  CNFFormula f;
+  satgen->generate_sat(f);
   cout << f;
 }

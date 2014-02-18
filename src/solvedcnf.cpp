@@ -1,3 +1,4 @@
+/* Basic structures: a solved CNF formula (by bruteforce) - also allows checking for frozen variables. */
 #include <algorithm>
 #include <vector>
 #include <iostream>

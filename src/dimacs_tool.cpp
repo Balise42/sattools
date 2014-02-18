@@ -1,3 +1,4 @@
+/* DEPRECATED - Proof of concept for dimacs generator*/
 #include "dimacsgenerator.h"
 #include <iostream>
 #include <string>
@@ -12,7 +13,8 @@ int main(){
   cin >> k;
   CNFFormula f;
   DimacsGenerator dg(filename, k);
-  cout << dg.generate_sat(f) << endl;
+  dg.generate_sat(f);
+  cout <<f << endl;
   
 }
 

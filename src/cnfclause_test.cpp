@@ -1,3 +1,4 @@
+/* Unit tests for cnf_clause*/
 #include "cnfclause.h"
 #include "structs.h"
 #include "gtest/gtest.h"

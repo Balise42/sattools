@@ -15,7 +15,7 @@ LIBS=-lboost_program_options
 # Remember to tweak this if you move this file.
 GTEST_DIR = /usr/src/gtest
 GTEST_CPPFLAGS += -I$(GTEST_DIR)/include
-TESTS = tests/cnfclause_test
+TESTS = tests/cnfclause_test tests/cnfformula_test
 GTEST_HEADERS = /usr/include/gtest/*.h /usr/include/gtest/internal/*.h
 
 all: $(TARGETS) $(TESTS)
@@ -69,6 +69,6 @@ tests/cnfclause_test: $(BUILDDIR)/cnfclause.o $(BUILDDIR)/cnfclause_test.o  lib/
 tests/cnfformula_test.o: $(SRCDIR)/cnfformula_test.cpp
 	$(CPP) $(CPPFLAGS) $(GTEST_CPPFLAGS) -c $<
 
-tests/cnfformula_test: $(BUILDDIR)/cnfformula.o $(BUILDDIR)/cnfclause.o $(BUILDDIR)/cnfformula_test.o lib/gtest_main.a
+tests/cnfformula_test: $(BUILDDIR)/cnfformula.o $(BUILDDIR)/cnfclause.o $(BUILDDIR)/solvedcnf.o $(BUILDDIR)/cnfformula_test.o lib/gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@ -lpthread
 

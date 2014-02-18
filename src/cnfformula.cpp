@@ -1,3 +1,4 @@
+/* CNF formula class. */
 #include <vector>
 #include <algorithm>
 #include <iostream>

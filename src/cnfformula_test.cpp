@@ -1,5 +1,7 @@
+/* Unit tests for cnfformula and solvedcnf*/
 #include "cnfformula.h"
 #include "cnfclause.h"
+#include "solvedcnf.h"
 #include "structs.h"
 #include "gtest/gtest.h"
 #include <vector>
@@ -37,25 +39,6 @@ TEST_F(CNFFormulaTest, create_with_clauses){
   EXPECT_EQ(f.begin()->getliteral(1).variable, 2);
 }
 
-TEST_F(CNFFormulaTest, was_solved){
-  EXPECT_FALSE(f.is_solved());
-  f.bruteforce_solve_sat();
-  EXPECT_TRUE(f.is_solved());
-  CNFClause c2;
-  literal l;
-  l.variable=4;
-  l.value=0;
-  c2.add_literal(l);
-  l.variable=3;
-  l.value=1;
-  c2.add_literal(l);
-  l.variable=2;
-  l.value=0;
-  c2.add_literal(l);
-  f.add_clause(c2);
-  EXPECT_FALSE(f.is_solved());
-}
-
 TEST(CNFFormula, bruteforce_solve_sat){
   literal l;
   CNFClause c;
@@ -71,8 +54,8 @@ TEST(CNFFormula, bruteforce_solve_sat){
   c.add_literal(l);
   clauses.push_back(c);
   CNFFormula f(3,3,clauses);
-  f.bruteforce_solve_sat();
-  EXPECT_EQ(f.get_satisfying_assignments().size(), 7);
+  SolvedCNF solf(f);
+  EXPECT_EQ(solf.get_satisfying_assignments().size(), 7);
 }
 
 TEST(CNFFormula, check_bitstring){
@@ -90,8 +73,8 @@ TEST(CNFFormula, check_bitstring){
   c.add_literal(l);
   clauses.push_back(c);
   CNFFormula f(3,3,clauses);
-  f.bruteforce_solve_sat();
-  std::vector<assignment> assg = f.get_satisfying_assignments();
+  SolvedCNF solf(f);
+  std::vector<assignment> assg = solf.get_satisfying_assignments();
   for(const auto & it : assg){
     EXPECT_TRUE(f.check_bitstring(it));
   }

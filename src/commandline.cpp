@@ -1,3 +1,4 @@
+/* Main executable: command line parsing and dispatching */
 #include <iostream>
 #include <fstream>
 #include <boost/program_options.hpp>
@@ -19,7 +20,7 @@ CommandLine::CommandLine(int argc, char ** argv):desc(new po::options_descriptio
     ("n,n", po::value<unsigned int>(), "Number of variables")
     ("k,k", po::value<unsigned int>(), "Arity of a clause")
     ("file,f", po::value<std::string>(), "Get formula from file")
-    ("random,r", po::value<unsigned int>(), "Get random formula with given random range")
+    ("random,r", po::value<unsigned int>(), "Get random formula with given frequency of clause (e.g. enter 5 to pick 1 out of 5 clauses on average)")
     ("max,m", "Get maximum formula from a set of assignments")
     ("assignment,a", po::value<std::vector<std::string> >(), "List of assignments for -m")
     ("interactive,i", "Interactive mode")
@@ -132,22 +133,23 @@ void CommandLine::parse_and_exec(){
     }
 
     if(vm->count("ppzfull")){
-      Ppz * ppz = new Ppz(&f);
-      ppz->full_solve_ppz();
-      std::cout << *ppz << std::endl;
+      Ppz * ppz = new Ppz(f);
+      PpzRunStats stats;
+      ppz->full_solve_ppz(stats);
+      std::cout << stats << std::endl;
       delete ppz;
     }
 
     if(vm->count("ppzfulloracle")){
-      Ppz * ppz = new Ppz(&f);
-      ppz->full_solve_ppz(true);
-      std::cout << *ppz << std::endl;
+      Ppz * ppz = new Ppz(f);
+      PpzRunStats stats;
+      ppz->full_solve_ppz(stats,true);
+      std::cout << stats << std::endl;
       delete ppz;
     }
 
     if(vm->count("ppzrandom")){
-      Ppz * ppz = new Ppz(&f);
-      ppz->full_solve_ppz(true);
+      Ppz * ppz = new Ppz(f);
       double limit = pow(2, f.get_n()-1.0/f.get_k());
       ppz->random_solve_ppz(limit);
     }

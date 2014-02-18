@@ -15,19 +15,9 @@
 class Ppz{
   private:
     /** the formula that we want to process with the algorithm */
-    CNFFormula * formula;
-    /** satisfying assignments at the end of the algorithm without oracle */
+    CNFFormula formula;
+    /** satisfying assignments at the end of the algorithm */
     std::set<assignment> assignments;
-    /** satisfying assignments at the end of the algorithm with oracle */
-    std::set<assignment> assignments_o;
-    /** whether we're currently dealing with assignmets or assignmets_o */
-    std::set<assignment> * currassg;
-    /** stats for PPZ run */
-    PpzRunStats * stats;
-    /** stats for PPZ run with oracle */
-    PpzRunStats * stats_o;
-    /** whether we're currently dealing with stats or stats_o */
-    PpzRunStats * currstats;
 
     /** Executes a permutation. For every variable in the order of the permutation, if
      it is forced, set it to its value. If it is not, if the oracle is on and the variable is
@@ -37,11 +27,11 @@ class Ppz{
      @param randombits a string of bits for "guessing" variables if they are not forced
      @param oracle whether the oracle is on or not 
      @return assignment a satisfying assignment or an empty vector if the run fails */
-    assignment execute_permutation(const std::vector<int> & permutation, const std::vector<short> & randombits, bool oracle);
+    assignment execute_permutation(const std::vector<int> & permutation, const std::vector<short> & randombits, unsigned int & forced, bool oracle);
 
   public:
     /** default constructor */
-    Ppz(CNFFormula * formula );
+    Ppz(CNFFormula & formula);
     /** destructor */
     ~Ppz();
     /** runs ppz up to "limit" times on random permutation and random bitstring
@@ -51,9 +41,8 @@ class Ppz{
     /** runs PPZ over all possible permutations and all possible bitstrings
       @param oracle true if we use the oracle, false otw
       */
-    void full_solve_ppz(bool oracle = false);
+    void full_solve_ppz(PpzRunStats & stats, bool oracle = false);
     /** prettyprint of the stats*/
-    friend std::ostream & operator<<(std::ostream & out, const Ppz & ppz);
 };
 
 #endif
