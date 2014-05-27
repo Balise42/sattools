@@ -24,7 +24,7 @@ std::ostream & operator<<(std::ostream & out, const PermStats & stats){
     out << ":\n";
     for(const auto & perm : el.second){
       for(const auto & var : perm){
-        out << var;
+        out << var+1;
       }
       out << std::endl;
     }
