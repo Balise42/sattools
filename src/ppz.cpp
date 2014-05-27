@@ -70,6 +70,7 @@ void Ppz::full_solve_ppz(PpzRunStats & stats, bool oracle){
         if(success){
           assignments.insert(assg);
           stats.record_success(forced);
+          stats.ps.add_perm_to_assg(assg, permutation);
         }
         else{
           stats.record_failure(forced);

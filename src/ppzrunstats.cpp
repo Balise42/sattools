@@ -2,9 +2,10 @@
 #include <iostream>
 #include <climits>
 #include "ppzrunstats.h"
+#include "permstats.h"
 
 
-PpzRunStats::PpzRunStats():all_cases(0),satisfying_cases(0),forced_a(0),maxforced_a(0),minforced_a(UINT_MAX),forced_s(0),maxforced_s(0),minforced_s(UINT_MAX),forced_u(0),maxforced_u(0),minforced_u(UINT_MAX){
+PpzRunStats::PpzRunStats():all_cases(0),satisfying_cases(0),forced_a(0),maxforced_a(0),minforced_a(UINT_MAX),forced_s(0),maxforced_s(0),minforced_s(UINT_MAX),forced_u(0),maxforced_u(0),minforced_u(UINT_MAX),ps(PermStats()){
 }
 
 void PpzRunStats::updateminmax(unsigned int forced, unsigned int & maxforced, unsigned int & minforced, unsigned int & total){
@@ -39,5 +40,6 @@ std::ostream & operator<<(std::ostream & out, const PpzRunStats & s){
   out << "Avg/Max/Min # of forced variables (sat. assignments): " << (double)s.forced_s/(double) s.satisfying_cases << "/" << s.maxforced_s << "/" << s.minforced_s << std::endl;
   out << "Total # of forced variables (unsat. cases): " << s.forced_u << std::endl;
   out << "Avg/Max/Min # of forced variables (unsat. cases): " << (double)s.forced_u/(double) (s.all_cases - s.satisfying_cases) << "/" << s.maxforced_u << "/" << s.minforced_u << std::endl;
+  out << s.ps;
   return out;
 }
