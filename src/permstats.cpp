@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <iostream>
 #include <map>
 #include <vector>
@@ -5,8 +6,8 @@
 
 #include "permstats.h"
 #include "structs.h"
-
-PermStats::PermStats():permsets(std::map<assignment,std::set<std::vector<int> > >()){
+#include "cnfclause.h"
+PermStats::PermStats(CNFClause c, unsigned int variable):PpzRunStats(),permsets(std::map<assignment,std::set<std::vector<int> > >()),statsclause(c),variable(variable){
 }
 
 void PermStats::add_perm_to_assg(assignment & assg, std::vector<int> & perm){
@@ -16,7 +17,32 @@ void PermStats::add_perm_to_assg(assignment & assg, std::vector<int> & perm){
   permsets[assg].insert(perm);
 }
 
+unsigned int PermStats::get_stats_lit_clause(const assignment & assg) const {
+  int total = 0;
+  if(permsets.count(assg) == 0){
+    return 0;
+  }
+  for(std::vector<int> perm : permsets.at(assg)){
+    bool valid = true;
+    std::vector<int>::iterator pos = std::find(perm.begin(),perm.end(),variable-1);
+    for(const auto lit : statsclause){
+      if(lit.variable == variable-1){
+        continue;
+      }
+      else if(std::find(perm.begin(),perm.end(),lit.variable) > pos){
+        valid = false;
+        break;
+      }
+    }
+    if(valid){
+      total++;
+    }
+  }
+  return total;
+}
+
 std::ostream & operator<<(std::ostream & out, const PermStats & stats){
+  out << (PpzRunStats) stats;
   for(const auto & el : stats.permsets){
     for(const auto & lit : el.first){
       out << lit;
@@ -28,6 +54,9 @@ std::ostream & operator<<(std::ostream & out, const PermStats & stats){
       }
       out << std::endl;
     }
+    std::vector<int> spec(3);
+    out << "Stats for var " << stats.variable << " in clause " << stats.statsclause << ": " << stats.get_stats_lit_clause(el.first) << " / " << el.second.size() << std::endl;
+
     out << std::endl;
   }
   return out;

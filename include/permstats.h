@@ -6,16 +6,22 @@
 #include <vector>
 #include <set>
 #include "structs.h"
+#include "cnfclause.h"
+#include "ppzrunstats.h"
 
-class PermStats {
+class PermStats : public PpzRunStats {
   private:
     std::map<assignment, std::set<std::vector<int> > > permsets;
+    CNFClause statsclause;
+    unsigned int variable;
 
   public:
     /** default constructor */
-    PermStats();
+    PermStats(CNFClause c, unsigned int variable);
     /** add a permutation to an assignment */
     void add_perm_to_assg(assignment & assg, std::vector<int> & perm);
+    /** get stats for "last in clause" for a clause and a lit for a given assignment */
+    unsigned int get_stats_lit_clause(const assignment & assg) const;
     /** prettyprinter */
     friend std::ostream & operator<<(std::ostream & out, const PermStats & stats);
 };

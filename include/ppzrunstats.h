@@ -2,7 +2,7 @@
 #define PPZRUNSTATS_H 1
 
 #include <climits>
-#include "permstats.h"
+#include "structs.h"
 
 class PpzRunStats {
   private:
@@ -31,9 +31,6 @@ class PpzRunStats {
     unsigned int maxforced_u;
     /** minimum number of forced variables for unsatisfying runs */
     unsigned int minforced_u;
-    /** permutation that lead to every satisfying assignment */
-    PermStats ps;
-
     /** default constructor*/
     PpzRunStats();
     /** prettyprint */
@@ -43,6 +40,7 @@ class PpzRunStats {
     void record_success(unsigned int forced);
     /** adds the current number of forced variables to unsatisfying run stats */
     void record_failure(unsigned int forced);
+    void virtual add_perm_to_assg(assignment & assg, std::vector<int> & perm);
 };
 
 #endif

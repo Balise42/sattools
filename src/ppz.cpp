@@ -8,6 +8,7 @@
 #include "structs.h"
 #include "ppz.h"
 #include "ppzrunstats.h"
+#include "permstats.h"
 #include "solvedcnf.h"
 
 Ppz::Ppz(CNFFormula & formula):formula(formula),assignments(std::set<assignment>()){
@@ -70,7 +71,10 @@ void Ppz::full_solve_ppz(PpzRunStats & stats, bool oracle){
         if(success){
           assignments.insert(assg);
           stats.record_success(forced);
-          stats.ps.add_perm_to_assg(assg, permutation);
+          PermStats * ps = dynamic_cast<PermStats *>(&stats);
+          if(ps != NULL){
+            ps->add_perm_to_assg(assg, permutation);
+          }        
         }
         else{
           stats.record_failure(forced);
