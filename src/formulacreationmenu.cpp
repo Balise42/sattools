@@ -107,6 +107,7 @@ bool FormulaCreationMenu::run(CNFFormula & f){
   std::cout << "(1) from file (DIMACS format)" << std::endl;
   std::cout << "(2) random formula" << std::endl;
   std::cout << "(3) maximum formula for a set of assignments" << std::endl << std::endl;
+  std::cout << "(0) exit program" << std::endl;
 
 
   char choice;
@@ -125,9 +126,11 @@ bool FormulaCreationMenu::run(CNFFormula & f){
       create_max_formula(f);
       return true;
       break;
+    case '0':
+      return false;
     default:
       std::cout << "Please choose a valid option [1-3]" << std::endl;
-      return false;
+      return true;
       break;
   }
 }

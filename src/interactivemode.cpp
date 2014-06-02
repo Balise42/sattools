@@ -12,20 +12,26 @@ InteractiveMode::~InteractiveMode(){
 }
 
 void InteractiveMode::start(){
-  CNFFormula f;
-  FormulaCreationMenu * fcm = new FormulaCreationMenu();
   while(1){
-    try{
-      fcm->run(f);
+    CNFFormula f;
+    FormulaCreationMenu * fcm = new FormulaCreationMenu();
+    bool cont = true;
+    while(1){
+      try{
+        cont = fcm->run(f);
+        break;
+      }
+      catch(std::exception e){
+        std::cout << e.what() << std::endl;
+      }
+    } 
+    delete fcm;
+
+    if(!cont){
       break;
     }
-    catch(std::exception e){
-      std::cout << e.what() << std::endl;
-    }
-  } 
-  delete fcm;
-
-  ExecutionMenu * em = new ExecutionMenu();
-  em->run(f);
-  delete em;
+    ExecutionMenu * em = new ExecutionMenu();
+    em->run(f);
+    delete em;
+  }
 }

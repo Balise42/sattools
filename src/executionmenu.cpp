@@ -85,23 +85,32 @@ void ExecutionMenu::run( CNFFormula & f) {
         break;
       case '7':
         {
-          std::cout << "Input your clause in DIMACS mode (including trailing 0): ";
           std::vector<int> clausespec;
-          int lit;
           std::string line;
-          getline(std::cin, line);
-          std::stringstream ss;
-          ss << line;
           while(1){
-            if(ss >> lit){
-              if(lit == 0){
+            clausespec = std::vector<int>(0);
+            std::cout << "Input your clause in DIMACS mode (including trailing 0): ";
+            int lit;
+            getline(std::cin, line);
+            std::stringstream ss;
+            ss << line;
+            bool valid = true;
+            while(1){
+              if(ss >> lit){
+                if(lit == 0){
+                  break;
+                }
+              }
+              else{
+                std::cerr << "Clause invalid\n";
+                valid = false;
                 break;
               }
+              clausespec.push_back(lit);
             }
-            else{
-              throw std::invalid_argument("Clause invalid");
+            if(valid){
+              break;
             }
-            clausespec.push_back(lit);
           }
           CNFClause c = CNFClause(clausespec);
           std::cout << "What variable do you want stats about? ";
