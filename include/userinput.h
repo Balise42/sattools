@@ -14,8 +14,6 @@ class UserInput{
     int getint(std::string prompt);
     /** gets a string from std::cin */
     std::string getstring(std::string prompt);
-    /** gets an assignment from std::cin */
-    Assignment getassignment(unsigned int n,std::string prompt);
 };
 
 #endif

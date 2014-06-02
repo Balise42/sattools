@@ -83,11 +83,12 @@ void FormulaCreationMenu::create_max_formula(CNFFormula & f) {
   }
 
   //now we get the assignments one by one
-  std::vector<Assignment> assignments(numassg);
+  std::vector<Assignment> assignments(numassg,Assignment(n));
   for(int i = 0; i<numassg; i++){
     while(1){
       try{
-        assignments[i] = ui->getassignment(n,std::string("Assignment #").append(std::to_string(i+1)).append("?"));
+        std::string assg = ui->getstring(std::string("Assignment #").append(std::to_string(i+1)).append("?"));
+        assignments[i].set_assignment(assg);
         break;
       } 
       catch(UserInputException e){

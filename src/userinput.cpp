@@ -37,16 +37,3 @@ std::string UserInput::getstring(std::string  prompt){
   getline(std::cin, input);
   return input;
 }
-
-Assignment UserInput::getassignment(unsigned int n, std::string  prompt){
-  std::cout << prompt << std::endl;
-  std::cout << " > ";
-  std::string input = "";
-  getline(std::cin, input);
-  if(input.length() != n){
-    throw UserInputException("An assignment must contain exactly n characters");
-  }
-  Assignment a;
-  a.set_assignment(input);
-  return a;
-}
