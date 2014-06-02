@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include "cnfclause.h"
+#include "assignment.h"
 
 /** represents a CNF formula */
 class CNFFormula{
@@ -25,12 +26,12 @@ class CNFFormula{
     /** does the assignment passed in parameter, does not modify the current formula 
     @param assg the assignment to make - 0 or 1 to corresponding variables, -1 for unassigned variables
     @return a new CNFFormula with the assignment made */
-    CNFFormula make_assignment(const assignment & assg) const;
+    CNFFormula make_assignment(const Assignment & assg) const;
     
     /** checks whether a bitstring solves a CNF formula
     @param bitstring the candidate bit string
     @return true if the bitstring satisfies the formula, false otw */
-    bool check_bitstring(const std::vector<short> & bitstring) const;
+    bool check_bitstring(const Assignment & bitstring) const;
 
     /** adds a clause to the formula
     @param clause the clause to add */

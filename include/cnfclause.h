@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include "structs.h"
+#include "assignment.h"
 
 /** CNF clause (disjunction of literals) */
 class CNFClause{
@@ -35,7 +36,7 @@ class CNFClause{
     satisfied.
     @param the bitstring to check
     @return true if the bitstring satisfies the clause, false otw*/
-    bool check_bitstring(const std::vector<short> & bitstring) const;
+    bool check_bitstring(const Assignment & bitstring) const;
 
     /** saves a clause to file (DIMACS format) */
     void save(std::ofstream & file) const;

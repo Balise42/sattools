@@ -2,8 +2,9 @@
 #include <vector>
 #include <algorithm>
 #include "maxsatgenerator.h"
+#include "assignment.h"
 
-MaxSatGenerator::MaxSatGenerator(unsigned int n, unsigned int k, const std::vector<assignment> & assignments):SatGenerator(n,k), assignments(assignments){
+MaxSatGenerator::MaxSatGenerator(unsigned int n, unsigned int k, const std::vector<Assignment> & assignments):SatGenerator(n,k), assignments(assignments){
 }
 
 MaxSatGenerator::~MaxSatGenerator(){

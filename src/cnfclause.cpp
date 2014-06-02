@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include "cnfclause.h"
+#include "assignment.h"
 
 CNFClause::CNFClause() : clause(std::vector<literal>(0)) {
 }
@@ -39,7 +40,7 @@ bool CNFClause::add_literal(literal l){
   return true;
 }
 
-bool CNFClause::check_bitstring(const std::vector<short> & bitstring) const {
+bool CNFClause::check_bitstring(const Assignment & bitstring) const {
   bool ok = false;
   // we check whether an assignment is compatible with the clause literal by literal
   for(const auto & lit : clause){

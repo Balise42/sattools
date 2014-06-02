@@ -3,6 +3,7 @@
 
 #include <string>
 #include "structs.h"
+#include "assignment.h"
 
 /** User input checking utility class*/
 class UserInput{
@@ -14,7 +15,7 @@ class UserInput{
     /** gets a string from std::cin */
     std::string getstring(std::string prompt);
     /** gets an assignment from std::cin */
-    assignment getassignment(unsigned int n,std::string prompt);
+    Assignment getassignment(unsigned int n,std::string prompt);
 };
 
 #endif

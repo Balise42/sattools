@@ -7,17 +7,19 @@
 #include "permstats.h"
 #include "structs.h"
 #include "cnfclause.h"
-PermStats::PermStats(CNFClause c, unsigned int variable):PpzRunStats(),permsets(std::map<assignment,std::set<std::vector<int> > >()),statsclause(c),variable(variable){
+#include "assignment.h"
+
+PermStats::PermStats(CNFClause c, unsigned int variable):PpzRunStats(),permsets(std::map<Assignment,std::set<std::vector<int> > >()),statsclause(c),variable(variable){
 }
 
-void PermStats::add_perm_to_assg(assignment & assg, std::vector<int> & perm){
+void PermStats::add_perm_to_assg(Assignment & assg, std::vector<int> & perm){
   if(permsets.count(assg) == 0){
     permsets[assg] = std::set<std::vector<int> >();
   }
   permsets[assg].insert(perm);
 }
 
-unsigned int PermStats::get_stats_lit_clause(const assignment & assg) const {
+unsigned int PermStats::get_stats_lit_clause(const Assignment & assg) const {
   int total = 0;
   if(permsets.count(assg) == 0){
     return 0;

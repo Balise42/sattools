@@ -5,6 +5,7 @@
 #include <fstream>
 #include <cassert>
 #include "cnfformula.h"
+#include "assignment.h"
 #include "structs.h"
 
 CNFFormula::CNFFormula(unsigned int n, int k, const std::vector<CNFClause> & clauses):n(n), k(k), clauses(clauses){
@@ -12,7 +13,7 @@ CNFFormula::CNFFormula(unsigned int n, int k, const std::vector<CNFClause> & cla
 
 CNFFormula::CNFFormula(){}
 
-bool CNFFormula::check_bitstring(const std::vector<short> & bitstring) const {
+bool CNFFormula::check_bitstring(const Assignment & bitstring) const {
   //we just check if it satisfies all clauses
   for(const auto & clause : clauses){
     if(!clause.check_bitstring(bitstring)){
@@ -33,7 +34,7 @@ std::ostream& operator<<(std::ostream& out, const CNFFormula & formula){
   return out;
 }
 
-CNFFormula CNFFormula::make_assignment(const assignment & assg) const {
+CNFFormula CNFFormula::make_assignment(const Assignment & assg) const {
   CNFFormula formula(n, k);
   for(const auto & clause : clauses){
     bool addit = true;

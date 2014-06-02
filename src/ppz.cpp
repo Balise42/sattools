@@ -10,14 +10,15 @@
 #include "ppzrunstats.h"
 #include "permstats.h"
 #include "solvedcnf.h"
+#include "assignment.h"
 
-Ppz::Ppz(CNFFormula & formula):formula(formula),assignments(std::set<assignment>()){
+Ppz::Ppz(CNFFormula & formula):formula(formula),assignments(std::set<Assignment>()){
 }
 
 Ppz::~Ppz(){
 } 
 
-assignment Ppz::random_solve_ppz(double limit){
+Assignment Ppz::random_solve_ppz(double limit){
   std::cout << "Starting ppz\n";
   int numtries = 0;
   std::vector<int> permutation(formula.get_n());
@@ -35,7 +36,7 @@ assignment Ppz::random_solve_ppz(double limit){
       bitstring[i] = dis(gen);
     }
     unsigned int forced = 0;
-    assignment assg = execute_permutation(permutation, bitstring, forced,false);
+    Assignment assg = execute_permutation(permutation, bitstring, forced,false);
     numtries++;
     if(assg.size() != 0 && formula.check_bitstring(assg)){
       std::cout << "Number of tries: " << numtries << std::endl;
@@ -43,7 +44,7 @@ assignment Ppz::random_solve_ppz(double limit){
     }
   } while(numtries < limit);
   std::cout << "PPZ failed.\n";
-  return std::vector<short>(0);
+  return Assignment(0);
 }
 
 void Ppz::full_solve_ppz(PpzRunStats & stats, bool oracle){
@@ -66,7 +67,7 @@ void Ppz::full_solve_ppz(PpzRunStats & stats, bool oracle){
       }
       do{
         unsigned int forced = 0;
-        assignment assg = execute_permutation(permutation, bitstring, forced,oracle);
+        Assignment assg = execute_permutation(permutation, bitstring, forced,oracle);
         bool success = assg.size() != 0 && formula.check_bitstring(assg);
         if(success){
           assignments.insert(assg);
@@ -84,10 +85,10 @@ void Ppz::full_solve_ppz(PpzRunStats & stats, bool oracle){
   } while(std::next_permutation(permutation.begin(), permutation.end()));
 }
 
-assignment Ppz::execute_permutation(const std::vector<int> & permutation, const std::vector<short> & randombits, unsigned int & forced, bool oracle = false){
+Assignment Ppz::execute_permutation(const std::vector<int> & permutation, const std::vector<short> & randombits, unsigned int & forced, bool oracle = false){
   forced = 0;
   unsigned n = formula.get_n();
-  assignment assg(n, -1);
+  Assignment assg(n);
   CNFFormula F(formula);
   SolvedCNF solf(F);
   for(const auto & variable : permutation){
@@ -105,7 +106,7 @@ assignment Ppz::execute_permutation(const std::vector<int> & permutation, const 
     }
     F = F.make_assignment(assg);
     if(F.is_unsat()){
-      return std::vector<short>(0);
+      return Assignment(0);
     }
   }
   return assg;

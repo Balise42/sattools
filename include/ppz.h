@@ -17,7 +17,7 @@ class Ppz{
     /** the formula that we want to process with the algorithm */
     CNFFormula formula;
     /** satisfying assignments at the end of the algorithm */
-    std::set<assignment> assignments;
+    std::set<Assignment> assignments;
 
     /** Executes a permutation. For every variable in the order of the permutation, if
      it is forced, set it to its value. If it is not, if the oracle is on and the variable is
@@ -27,7 +27,7 @@ class Ppz{
      @param randombits a string of bits for "guessing" variables if they are not forced
      @param oracle whether the oracle is on or not 
      @return assignment a satisfying assignment or an empty vector if the run fails */
-    assignment execute_permutation(const std::vector<int> & permutation, const std::vector<short> & randombits, unsigned int & forced, bool oracle);
+    Assignment execute_permutation(const std::vector<int> & permutation, const std::vector<short> & randombits, unsigned int & forced, bool oracle);
 
   public:
     /** default constructor */
@@ -37,7 +37,7 @@ class Ppz{
     /** runs ppz up to "limit" times on random permutation and random bitstring
      @param limit the maximum number of trials
      @return a satisfying assignment or an empty vector if the algorithm fails */
-    assignment random_solve_ppz(double limit);
+    Assignment random_solve_ppz(double limit);
     /** runs PPZ over all possible permutations and all possible bitstrings
       @param oracle true if we use the oracle, false otw
       */

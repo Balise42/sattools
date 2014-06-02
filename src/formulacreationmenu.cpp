@@ -10,6 +10,7 @@
 #include "maxsatgenerator.h"
 #include "randomsatgenerator.h"
 #include "solvedcnf.h"
+#include "assignment.h"
 
 
 FormulaCreationMenu::FormulaCreationMenu():ui(new UserInput()){
@@ -82,7 +83,7 @@ void FormulaCreationMenu::create_max_formula(CNFFormula & f) {
   }
 
   //now we get the assignments one by one
-  std::vector<assignment> assignments(numassg);
+  std::vector<Assignment> assignments(numassg);
   for(int i = 0; i<numassg; i++){
     while(1){
       try{

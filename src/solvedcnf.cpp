@@ -4,8 +4,9 @@
 #include <iostream>
 #include "solvedcnf.h"
 #include "cnfformula.h"
+#include "assignment.h"
 
-SolvedCNF::SolvedCNF(const CNFFormula & f):f(new CNFFormula(f)),satisfying_assignments(std::vector<assignment>(0)){
+SolvedCNF::SolvedCNF(const CNFFormula & f):f(new CNFFormula(f)),satisfying_assignments(std::vector<Assignment>(0)){
   bruteforce_solve_sat(satisfying_assignments);
 }
 
@@ -13,10 +14,10 @@ SolvedCNF::~SolvedCNF(){
   delete f;
 }
 
-void SolvedCNF::bruteforce_solve_sat(std::vector<assignment> & assignments, std::vector<short> partial) const {
+void SolvedCNF::bruteforce_solve_sat(std::vector<Assignment> & assignments, Assignment partial) const {
   unsigned int n = f->get_n();
   if(partial.size() == 0){
-    partial = std::vector<short>(n, -1);
+    partial = Assignment(n);
   }
 
   std::vector<short> bitstring;
@@ -28,7 +29,7 @@ void SolvedCNF::bruteforce_solve_sat(std::vector<assignment> & assignments, std:
       bitstring[j] = 1;
     }
     do {
-      std::vector<short> bitstringwithpartial(n);
+      Assignment bitstringwithpartial(n);
       for(unsigned int j = 0; j<n; j++){
         if(partial[j] != -1){
           bitstringwithpartial[j] = partial[j];
@@ -58,8 +59,8 @@ std::ostream& operator<<(std::ostream& out, const SolvedCNF & formula){
   return out;
 }
 
-bool SolvedCNF::is_frozen(int variable, std::vector<short> partial) const{
-  std::vector<assignment> assignments(0);
+bool SolvedCNF::is_frozen(int variable, Assignment partial) const{
+  std::vector<Assignment> assignments(0);
   // bruteforce solves to check if a variable is frozen. quite ugly,
   // but since PPZ is incredibly slow anyway...
   bruteforce_solve_sat(assignments,partial);

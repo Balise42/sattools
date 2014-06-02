@@ -31,7 +31,7 @@ void PpzRunStats::record_failure(unsigned int forced){
   updateminmax(forced, maxforced_u, minforced_u, forced_u);
 }
 
-void PpzRunStats::add_perm_to_assg(assignment & assg, std::vector<int> & perm){
+void PpzRunStats::add_perm_to_assg(Assignment & assg, std::vector<int> & perm){
 }
 
 std::ostream & operator<<(std::ostream & out, const PpzRunStats & s){

@@ -47,9 +47,9 @@ TEST(CNFClause, check_bitstring){
   literals.push_back(l1);
   literals.push_back(l2);
   CNFClause c(literals);
-  std::vector<short> bitstring;
-  bitstring.push_back(0);
-  bitstring.push_back(1);
+  Assignment bitstring(2);
+  bitstring[0] = 0;
+  bitstring[1] = 1;
   EXPECT_TRUE(c.check_bitstring(bitstring));
   bitstring[0] = 1;
   EXPECT_TRUE(c.check_bitstring(bitstring));

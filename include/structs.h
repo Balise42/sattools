@@ -14,7 +14,4 @@ struct literal{
   short value;
 };
 
-/** an assignment is a vector of values, indexed by the variable id */
-typedef std::vector<short> assignment;
-
 #endif

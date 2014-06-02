@@ -77,21 +77,10 @@ void CommandLine::parse_max(CNFFormula & f){
   unsigned int n = (*vm)["n"].as<unsigned int>();
   unsigned int k = (*vm)["k"].as<unsigned int>();
   std::vector<std::string> strass = (*vm)["assignment"].as<std::vector<std::string> >();
-  std::vector<assignment> assignments;
+  std::vector<Assignment> assignments;
   for(const auto & as : strass){
-    assignment a;
-    for(const auto & ch : as){
-      if(ch == '0'){
-        a.push_back(0);
-      }
-      else if(ch == '1'){
-        a.push_back(1);
-      }
-      else{
-        std::cerr << "Invalid assignment " << ch << std::endl;
-        throw std::invalid_argument("Invalid assignment");
-      }
-    }
+    Assignment a;
+    a.set_assignment(as);
     assignments.push_back(a);
   }
   MaxSatGenerator mg(n, k, assignments);

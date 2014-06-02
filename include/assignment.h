@@ -1,0 +1,30 @@
+#ifndef ASSIGNMENT_H
+#define ASSIGNMENT_H 1
+
+#include <vector>
+#include <string>
+#include <iostream>
+
+class Assignment {
+  private:
+    std::vector<short> assignment;
+
+  public:
+    Assignment();
+    Assignment(int n);
+    void set_assignment(std::string s);
+    short& operator[] (const int nIndex);
+    short operator [] (const int index) const; 
+    friend std::ostream& operator<<(std::ostream& out, const Assignment & as);
+    friend std::istream& operator>>(std::istream & in, Assignment & as);
+    friend bool operator<(const Assignment & lhs, const Assignment & rhs);
+
+    typedef std::vector<short>::iterator iterator;
+    typedef std::vector<short>::const_iterator const_iterator;
+    iterator begin();
+    const_iterator begin() const;
+    iterator end();
+    const_iterator end() const;
+    unsigned int size() const;
+};
+#endif

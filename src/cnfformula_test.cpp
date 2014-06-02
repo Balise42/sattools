@@ -4,6 +4,7 @@
 #include "solvedcnf.h"
 #include "structs.h"
 #include "gtest/gtest.h"
+#include "assignment.h"
 #include <vector>
 
 TEST(CNFFormula, create_empty){
@@ -74,12 +75,12 @@ TEST(CNFFormula, check_bitstring){
   clauses.push_back(c);
   CNFFormula f(3,3,clauses);
   SolvedCNF solf(f);
-  std::vector<assignment> assg = solf.get_satisfying_assignments();
+  std::vector<Assignment> assg = solf.get_satisfying_assignments();
   for(const auto & it : assg){
     EXPECT_TRUE(f.check_bitstring(it));
   }
-  assignment assfalse;
-  assfalse.push_back(1); assfalse.push_back(1); assfalse.push_back(0);
+  Assignment assfalse(3);
+  assfalse[0] = 1; assfalse[1] = 1; assfalse[2] = 0;
   EXPECT_FALSE(f.check_bitstring(assfalse));
 }
 
