@@ -4,6 +4,8 @@
 #include <iostream>
 #include <fstream>
 #include <cassert>
+#include <ctime>
+#include <cstdlib>
 #include "cnfformula.h"
 #include "assignment.h"
 #include "structs.h"
@@ -32,7 +34,7 @@ void CNFFormula::minimalize(){
   CNFFormula backup(*this);
   CNFFormula inprogress(*this);
   SolvedCNF solved(*this);
-
+  std::srand(unsigned (std::time(0)));
   std::random_shuffle(backup.begin(), backup.end());
   for(const auto & clause : backup){
     inprogress.clauses.erase(std::remove(inprogress.clauses.begin(), inprogress.clauses.end(), clause), std::end(inprogress.clauses));
