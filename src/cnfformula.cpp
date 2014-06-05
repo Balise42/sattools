@@ -7,6 +7,7 @@
 #include "cnfformula.h"
 #include "assignment.h"
 #include "structs.h"
+#include "solvedcnf.h"
 
 CNFFormula::CNFFormula(unsigned int n, int k, const std::vector<CNFClause> & clauses):n(n), k(k), clauses(clauses){
 }
@@ -25,6 +26,22 @@ bool CNFFormula::check_bitstring(const Assignment & bitstring) const {
 
 void CNFFormula::add_clause(const CNFClause & clause){
   clauses.push_back(clause);
+}
+
+void CNFFormula::minimalize(){
+  CNFFormula backup(*this);
+  CNFFormula inprogress(*this);
+  SolvedCNF solved(*this);
+
+  std::random_shuffle(backup.begin(), backup.end());
+  for(const auto & clause : backup){
+    inprogress.clauses.erase(std::remove(inprogress.clauses.begin(), inprogress.clauses.end(), clause), std::end(inprogress.clauses));
+    SolvedCNF tmpsolved(inprogress);
+    if(tmpsolved.get_satisfying_assignments().size() != solved.get_satisfying_assignments().size()){
+      inprogress.add_clause(clause);
+    }
+  }
+  clauses = inprogress.clauses;
 }
 
 std::ostream& operator<<(std::ostream& out, const CNFFormula & formula){

@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <fstream>
+#include <algorithm>
 #include "cnfclause.h"
 #include "assignment.h"
 
@@ -94,4 +95,20 @@ void CNFClause::save(std::ofstream & file) const{
     }
     file << "0" << std::endl;
   }
+}
+
+bool operator<(literal a, literal b){
+  return (std::make_pair(a.variable, a.value) < std::make_pair(b.variable,b.value));
+}
+
+bool operator==(literal a, literal b){
+  return(a.variable==b.variable && a.value == b.value);
+}
+
+bool operator==(CNFClause a, CNFClause b){
+  std::vector<literal> ca = a.clause;
+  std::sort(ca.begin(), ca.end());
+  std::vector<literal> cb = b.clause;
+  std::sort(cb.begin(),cb.end());
+  return(ca == cb);
 }

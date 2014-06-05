@@ -33,6 +33,7 @@ void ExecutionMenu::run( CNFFormula & f) {
     std::cout << "(5) Print formula" << std::endl;
     std::cout << "(6) Save formula" << std::endl;
     std::cout << "(7) Statistics for a given variable in a given clause" << std::endl;
+    std::cout << "(8) Minimalize formula" << std::endl;
     std::cout << "(0) Exit" << std::endl;
 
     char choice;
@@ -127,6 +128,9 @@ void ExecutionMenu::run( CNFFormula & f) {
           delete ppz;
           break;
         }
+      case '8':
+        f.minimalize();
+        break;
       case '0':
         return;
         break;

@@ -67,6 +67,9 @@ class CNFClause{
 
     /** @return the number of variables in the clause */
     unsigned int size() const;
+
+    /** comparator for clauses */
+    friend bool operator==(CNFClause a, CNFClause b);
 };
 
 #endif

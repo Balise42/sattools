@@ -37,6 +37,9 @@ class CNFFormula{
     @param clause the clause to add */
     void add_clause(const CNFClause & clause);
 
+    /** minimalize the formula, i.e. transforms the formula into an equivalent minimal formula (by removing clauses 1 by 1 and checking whether the set of satisfying assignmnents stays the same) */
+    void minimalize();
+
     /** pretty printer for the formula */
     friend std::ostream& operator<<(std::ostream& out, const CNFFormula & formula);
 
