@@ -3,12 +3,13 @@ INCLUDEDIR=./include
 SRCDIR=./src
 BUILDDIR=./build
 CPPFLAGS=-Wall -W -Wextra -std=c++11 -ggdb -I$(INCLUDEDIR)
-TARGETS=$(addprefix tests/,generate_sat_tool ppz_tool ppz_random_tool dimacs_tool) sattools
+TARGETS=$(addprefix tests/,generate_sat_tool ppz_tool ppz_random_tool dimacs_tool) sattools satstats
 GENERATE_OBJECTS=$(addprefix $(BUILDDIR)/,cnfclause.o cnfformula.o generate_sat_tool.o satgenerator.o maxsatgenerator.o solvedcnf.o assignment.o)
 PPZ_OBJECTS=$(addprefix $(BUILDDIR)/,cnfclause.o cnfformula.o satgenerator.o ppz.o ppz_tool.o maxsatgenerator.o ppzrunstats.o solvedcnf.o permstats.o assignment.o)
 PPZ_RANDOM_OBJECTS=$(addprefix $(BUILDDIR)/,cnfclause.o cnfformula.o satgenerator.o ppz.o randomsatgenerator.o ppz_random_tool.o ppzrunstats.o solvedcnf.o permstats.o assignment.o)
 DIMACS_OBJECTS=$(addprefix $(BUILDDIR)/,cnfclause.o cnfformula.o satgenerator.o dimacsgenerator.o dimacs_tool.o solvedcnf.o assignment.o)
 SATTOOLS_OBJECTS=$(addprefix $(BUILDDIR)/,cnfclause.o cnfformula.o satgenerator.o dimacsgenerator.o sattools.o ppz.o randomsatgenerator.o maxsatgenerator.o ppzrunstats.o commandline.o interactivemode.o formulacreationmenu.o userinput.o executionmenu.o solvedcnf.o permstats.o assignment.o)
+SATSTATS_OBJECTS=$(addprefix $(BUILDDIR)/,cnfclause.o cnfformula.o satgenerator.o ppz.o maxsatgenerator.o ppzrunstats.o assignment.o solvedcnf.o satstats.o permstats.o)
 OBJS=$(GENERATE_OBJECTS) $(PPZ_OBJECTS) $(DIMACS_OBJECTS) $(SATTOOLS_OBJECTS)
 LIBS=-lboost_program_options
 # Points to the root of Google Test, relative to where this file is.
@@ -37,6 +38,9 @@ tests/dimacs_tool: $(DIMACS_OBJECTS)
 
 sattools: $(SATTOOLS_OBJECTS)
 	$(CPP) $(CPPFLAGS) $(SATTOOLS_OBJECTS) -o $@ $(LIBS)
+
+satstats: $(SATSTATS_OBJECTS)
+	$(CPP) $(CPPFLAGS) $(SATSTATS_OBJECTS) -o $@ $(LIBS) 
 
 clean:
 	-rm -f $(OBJS) $(TARGETS)

@@ -12,6 +12,7 @@ class Assignment {
   public:
     Assignment();
     Assignment(int n);
+    Assignment(std::vector<short> assignment);
     void set_assignment(std::string s);
     short& operator[] (const int nIndex);
     short operator [] (const int index) const; 

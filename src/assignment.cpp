@@ -20,6 +20,9 @@ Assignment::Assignment():assignment(std::vector<short>(0)){
 Assignment::Assignment(int n):assignment(std::vector<short>(n, -1)){
 }
 
+Assignment::Assignment(std::vector<short> assignment):assignment(assignment){
+}
+
 void Assignment::set_assignment(std::string s){
   std::vector<short> a = std::vector<short>(0);
   for(const auto & ch : s){
