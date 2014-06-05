@@ -24,6 +24,7 @@ CommandLine::CommandLine(int argc, char ** argv):desc(new po::options_descriptio
     ("max,m", "Get maximum formula from a set of assignments")
     ("assignment,a", po::value<std::vector<std::string> >(), "List of assignments for -m")
     ("interactive,i", "Interactive mode")
+    ("minimalize", "Minimalize the formula before doing anything else")
     ("bruteforce", "Solve by bruteforce - warning, all case exponential time algorithm!")
     ("ppzfull", "Solve by full ppz - warning, all case superexponential time algorithm!")
     ("ppzfulloracle", "Solve by full ppz with oracle - warning, all case superexponential time algorithm!")
@@ -113,6 +114,10 @@ void CommandLine::parse_and_exec(){
     }
     if(vm->count("max")){
       parse_max(f);
+    }
+
+    if(vm->count("minimalize")){
+      f.minimalize();
     }
   
     if(vm->count("bruteforce")){
