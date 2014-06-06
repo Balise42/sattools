@@ -4,6 +4,7 @@
 #include <iostream>
 #include <random>
 #include <chrono>
+#include <boost/thread.hpp>
 
 #include "structs.h"
 #include "ppz.h"
@@ -36,7 +37,7 @@ Assignment Ppz::random_solve_ppz(double limit){
       bitstring[i] = dis(gen);
     }
     unsigned int forced = 0;
-    Assignment assg = execute_permutation(permutation, bitstring, forced,false);
+    Assignment assg = execute_bitstring(permutation, bitstring, forced,false);
     numtries++;
     if(assg.size() != 0 && formula.check_bitstring(assg)){
       std::cout << "Number of tries: " << numtries << std::endl;
@@ -48,7 +49,7 @@ Assignment Ppz::random_solve_ppz(double limit){
 }
 
 void Ppz::full_solve_ppz(PpzRunStats & stats, bool oracle){
-  
+ 
   unsigned int n = formula.get_n();
   std::vector<int> permutation(n, 0);
   for(unsigned int i = 0; i<n; i++){
@@ -56,36 +57,42 @@ void Ppz::full_solve_ppz(PpzRunStats & stats, bool oracle){
   }
 
   do{
-    std::vector<short> bitstring;
-    
-    //we enumerate all the bitstrings by taking all permutations of strings
-    //that have i bits to 1
-    for(unsigned int i = 0; i<= n; i++){
-      bitstring = std::vector<short>(n, 0);
-      for(unsigned int j = 0; j<i; j++){
-        bitstring[j] = 1;
-      }
-      do{
-        unsigned int forced = 0;
-        Assignment assg = execute_permutation(permutation, bitstring, forced,oracle);
-        bool success = assg.size() != 0 && formula.check_bitstring(assg);
-        if(success){
-          assignments.insert(assg);
-          stats.record_success(forced);
-          PermStats * ps = dynamic_cast<PermStats *>(&stats);
-          if(ps != NULL){
-            ps->add_perm_to_assg(assg, permutation);
-          }        
-        }
-        else{
-          stats.record_failure(forced);
-        }
-      } while(std::prev_permutation(bitstring.begin(), bitstring.end()));
-    }
+    boost::thread thr1(&Ppz::execute_permutation, this, permutation, oracle, stats);
+    thr1.join();
   } while(std::next_permutation(permutation.begin(), permutation.end()));
 }
 
-Assignment Ppz::execute_permutation(const std::vector<int> & permutation, const std::vector<short> & randombits, unsigned int & forced, bool oracle = false){
+void Ppz::execute_permutation(const std::vector<int> & permutation, bool oracle, PpzRunStats & stats){
+  unsigned int n = formula.get_n();
+    //we enumerate all the bitstrings by taking all permutations of strings
+    //that have i bits to 1
+  std::vector<short> bitstring;
+  for(unsigned int i = 0; i<= n; i++){
+    bitstring = std::vector<short>(n, 0);
+    for(unsigned int j = 0; j<i; j++){
+      bitstring[j] = 1;
+    }
+
+    do {
+      unsigned int forced = 0;
+      Assignment assg = execute_bitstring(permutation, bitstring, forced,oracle);
+      bool success = assg.size() != 0 && formula.check_bitstring(assg);
+      if(success){
+        assignments.insert(assg);
+        stats.record_success(forced);
+        PermStats * ps = dynamic_cast<PermStats *>(&stats);
+        if(ps != NULL){
+          ps->add_perm_to_assg(assg, permutation);
+        }
+      }
+      else{
+        stats.record_failure(forced);
+      }
+    } while(std::prev_permutation(bitstring.begin(), bitstring.end()));
+  }
+}
+
+Assignment Ppz::execute_bitstring(const std::vector<int> & permutation, const std::vector<short> & randombits, unsigned int & forced, bool oracle = false){
   forced = 0;
   unsigned n = formula.get_n();
   Assignment assg(n);

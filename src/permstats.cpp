@@ -12,7 +12,7 @@
 PermStats::PermStats(CNFClause c, unsigned int variable):PpzRunStats(),permsets(std::map<Assignment,std::set<std::vector<int> > >()),statsclause(c),variable(variable){
 }
 
-void PermStats::add_perm_to_assg(Assignment & assg, std::vector<int> & perm){
+void PermStats::add_perm_to_assg(Assignment & assg, const std::vector<int> & perm){
   if(permsets.count(assg) == 0){
     permsets[assg] = std::set<std::vector<int> >();
   }

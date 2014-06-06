@@ -41,7 +41,7 @@ class PpzRunStats {
     void record_success(unsigned int forced);
     /** adds the current number of forced variables to unsatisfying run stats */
     void record_failure(unsigned int forced);
-    void virtual add_perm_to_assg(Assignment & assg, std::vector<int> & perm);
+    void virtual add_perm_to_assg(Assignment & assg, const std::vector<int> & perm);
 };
 
 #endif

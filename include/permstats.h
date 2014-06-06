@@ -20,7 +20,7 @@ class PermStats : public PpzRunStats {
     /** default constructor */
     PermStats(CNFClause c, unsigned int variable);
     /** add a permutation to an assignment */
-    void add_perm_to_assg(Assignment & assg, std::vector<int> & perm);
+    void add_perm_to_assg(Assignment & assg, const std::vector<int> & perm);
     /** get stats for "last in clause" for a clause and a lit for a given assignment */
     unsigned int get_stats_lit_clause(const Assignment & assg) const;
     /** prettyprinter */

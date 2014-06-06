@@ -11,7 +11,7 @@ DIMACS_OBJECTS=$(addprefix $(BUILDDIR)/,cnfclause.o cnfformula.o satgenerator.o 
 SATTOOLS_OBJECTS=$(addprefix $(BUILDDIR)/,cnfclause.o cnfformula.o satgenerator.o dimacsgenerator.o sattools.o ppz.o randomsatgenerator.o maxsatgenerator.o ppzrunstats.o commandline.o interactivemode.o formulacreationmenu.o userinput.o executionmenu.o solvedcnf.o permstats.o assignment.o)
 SATSTATS_OBJECTS=$(addprefix $(BUILDDIR)/,cnfclause.o cnfformula.o satgenerator.o ppz.o maxsatgenerator.o ppzrunstats.o assignment.o solvedcnf.o satstats.o permstats.o)
 OBJS=$(GENERATE_OBJECTS) $(PPZ_OBJECTS) $(DIMACS_OBJECTS) $(SATTOOLS_OBJECTS)
-LIBS=-lboost_program_options
+LIBS=-lboost_program_options -lboost_thread -lboost_system
 # Points to the root of Google Test, relative to where this file is.
 # Remember to tweak this if you move this file.
 GTEST_DIR = /usr/src/gtest
@@ -28,10 +28,10 @@ tests/generate_sat_tool: $(GENERATE_OBJECTS)
 	$(CPP) $(CPPFLAGS) $(GENERATE_OBJECTS) -o $@
 
 tests/ppz_tool: $(PPZ_OBJECTS)
-	$(CPP) $(CPPFLAGS) $(PPZ_OBJECTS) -o $@
+	$(CPP) $(CPPFLAGS) $(PPZ_OBJECTS) -o $@ $(LIBS)
 
 tests/ppz_random_tool: $(PPZ_RANDOM_OBJECTS)
-	$(CPP) $(CPPFLAGS) $(PPZ_RANDOM_OBJECTS) -o $@
+	$(CPP) $(CPPFLAGS) $(PPZ_RANDOM_OBJECTS) -o $@ $(LIBS)
 
 tests/dimacs_tool: $(DIMACS_OBJECTS)
 	$(CPP) $(CPPFLAGS) $(DIMACS_OBJECTS) -o $@
@@ -68,11 +68,11 @@ $(BUILDDIR)/cnfclause_test.o: $(SRCDIR)/cnfclause_test.cpp
 	$(CPP) $(CPPFLAGS) $(GTEST_CPPFLAGS) -c $< -o $@
 
 tests/cnfclause_test: $(BUILDDIR)/cnfclause.o $(BUILDDIR)/cnfclause_test.o $(BUILDDIR)/assignment.o  lib/gtest_main.a
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@ -lpthread
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@ -lpthread $(LIBS)
 
 tests/cnfformula_test.o: $(SRCDIR)/cnfformula_test.cpp
 	$(CPP) $(CPPFLAGS) $(GTEST_CPPFLAGS) -c $<
 
 tests/cnfformula_test: $(BUILDDIR)/cnfformula.o $(BUILDDIR)/cnfclause.o $(BUILDDIR)/solvedcnf.o $(BUILDDIR)/assignment.o $(BUILDDIR)/cnfformula_test.o lib/gtest_main.a
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@ -lpthread
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@ -lpthread $(LIBS)
 
