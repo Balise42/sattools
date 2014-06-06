@@ -45,7 +45,10 @@ int main(){
       ppz.full_solve_ppz(stats1);
       Ppz ppzo(f);
       ppz.full_solve_ppz(stats2, true);
-      std::cout << stats1.satisfying_cases << " " << stats2.satisfying_cases << std::endl; 
+      std::cout << stats1.satisfying_cases << " " << stats2.satisfying_cases << std::endl;
+      if(stats2.satisfying_cases <= 792){
+        std::cout << f << stats1 << stats2;
+      }
     }
   } while(std::prev_permutation(pick3.begin(), pick3.end()));
 }
