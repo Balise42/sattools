@@ -57,12 +57,12 @@ void Ppz::full_solve_ppz(PpzRunStats & stats, bool oracle){
   }
 
   do{
-    boost::thread thr1(&Ppz::execute_permutation, this, permutation, oracle, stats);
+    boost::thread thr1(&Ppz::execute_permutation, this, permutation, oracle, &stats);
     thr1.join();
   } while(std::next_permutation(permutation.begin(), permutation.end()));
 }
 
-void Ppz::execute_permutation(const std::vector<int> & permutation, bool oracle, PpzRunStats & stats){
+void Ppz::execute_permutation(const std::vector<int> & permutation, bool oracle, PpzRunStats * stats){
   unsigned int n = formula.get_n();
     //we enumerate all the bitstrings by taking all permutations of strings
     //that have i bits to 1
@@ -79,14 +79,14 @@ void Ppz::execute_permutation(const std::vector<int> & permutation, bool oracle,
       bool success = assg.size() != 0 && formula.check_bitstring(assg);
       if(success){
         assignments.insert(assg);
-        stats.record_success(forced);
-        PermStats * ps = dynamic_cast<PermStats *>(&stats);
+        stats->record_success(forced);
+        PermStats * ps = dynamic_cast<PermStats *>(stats);
         if(ps != NULL){
           ps->add_perm_to_assg(assg, permutation);
         }
       }
       else{
-        stats.record_failure(forced);
+        stats->record_failure(forced);
       }
     } while(std::prev_permutation(bitstring.begin(), bitstring.end()));
   }

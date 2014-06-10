@@ -29,7 +29,7 @@ class Ppz{
      @return assignment a satisfying assignment or an empty vector if the run fails */
     Assignment execute_bitstring(const std::vector<int> & permutation, const std::vector<short> & randombits, unsigned int & forced, bool oracle);
 
-    void execute_permutation(const std::vector<int> & permutation, bool oracle, PpzRunStats & stats);
+    void execute_permutation(const std::vector<int> & permutation, bool oracle, PpzRunStats * stats);
   public:
     /** default constructor */
     Ppz(CNFFormula & formula);
