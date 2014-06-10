@@ -2,6 +2,7 @@
 #define PPZRUNSTATS_H 1
 
 #include <climits>
+#include <boost/thread/mutex.hpp>
 #include "structs.h"
 #include "assignment.h"
 
@@ -9,6 +10,8 @@ class PpzRunStats {
   private:
     /** update min and max number of variables forced after one run of the algorithm */
     void updateminmax(unsigned int tmp, unsigned int & maxforced, unsigned int & minforced, unsigned int & total);
+
+    boost::mutex mutex;
   public:
     /** total number of tries */
     unsigned int all_cases;

@@ -4,6 +4,8 @@
 #include <vector>
 #include <set>
 #include <iostream>
+#include <boost/thread/mutex.hpp>
+
 #include "cnfformula.h"
 #include "structs.h"
 #include "ppzrunstats.h"
@@ -19,6 +21,7 @@ class Ppz{
     /** satisfying assignments at the end of the algorithm */
     std::set<Assignment> assignments;
 
+    boost::mutex assgmutex;
     /** Executes a permutation. For every variable in the order of the permutation, if
      it is forced, set it to its value. If it is not, if the oracle is on and the variable is
      non-frozen, set it to 0. In the other cases, set it to the corresponding bit from the

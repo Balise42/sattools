@@ -4,5 +4,6 @@
 int main(int argc, char** argv){
   CommandLine * cl = new CommandLine(argc, argv);
   cl->parse_and_exec();
+  delete cl;
   return 0;
 }

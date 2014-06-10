@@ -1,6 +1,7 @@
 /* Basic structures:  PPZ statistics for a run */
 #include <iostream>
 #include <climits>
+#include <boost/thread.hpp>
 #include "ppzrunstats.h"
 #include "permstats.h"
 
@@ -19,6 +20,7 @@ void PpzRunStats::updateminmax(unsigned int forced, unsigned int & maxforced, un
 }
 
 void PpzRunStats::record_success(unsigned int forced){
+  boost::lock_guard<boost::mutex> guard(mutex);
   all_cases++;
   updateminmax(forced, maxforced_a, minforced_a, forced_a);
   satisfying_cases++;
@@ -26,6 +28,7 @@ void PpzRunStats::record_success(unsigned int forced){
 }
 
 void PpzRunStats::record_failure(unsigned int forced){
+  boost::lock_guard<boost::mutex> guard(mutex);
   all_cases++;
   updateminmax(forced, maxforced_a, minforced_a, forced_a);
   updateminmax(forced, maxforced_u, minforced_u, forced_u);

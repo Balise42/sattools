@@ -13,6 +13,7 @@ PermStats::PermStats(CNFClause c, unsigned int variable):PpzRunStats(),permsets(
 }
 
 void PermStats::add_perm_to_assg(Assignment & assg, const std::vector<int> & perm){
+  boost::lock_guard<boost::mutex> guard(mutex_assig);
   if(permsets.count(assg) == 0){
     permsets[assg] = std::set<std::vector<int> >();
   }
@@ -44,7 +45,7 @@ unsigned int PermStats::get_stats_lit_clause(const Assignment & assg) const {
 }
 
 std::ostream & operator<<(std::ostream & out, const PermStats & stats){
-  out << (PpzRunStats) stats;
+  out << * (dynamic_cast<const PpzRunStats * >(&stats));
   for(const auto & el : stats.permsets){
     for(const auto & lit : el.first){
       out << lit;

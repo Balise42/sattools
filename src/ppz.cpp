@@ -74,12 +74,13 @@ void Ppz::execute_permutation(const std::vector<int> & permutation, bool oracle,
     }
 
     do {
+      std::set<Assignment> tmpassg;
       unsigned int forced = 0;
       Assignment assg = execute_bitstring(permutation, bitstring, forced,oracle);
       bool success = assg.size() != 0 && formula.check_bitstring(assg);
       if(success){
-        assignments.insert(assg);
         stats->record_success(forced);
+        tmpassg.insert(assg); 
         PermStats * ps = dynamic_cast<PermStats *>(stats);
         if(ps != NULL){
           ps->add_perm_to_assg(assg, permutation);
@@ -87,6 +88,10 @@ void Ppz::execute_permutation(const std::vector<int> & permutation, bool oracle,
       }
       else{
         stats->record_failure(forced);
+      }
+      {
+        boost::lock_guard<boost::mutex> guard(assgmutex);
+        assignments.insert(tmpassg.begin(), tmpassg.end());
       }
     } while(std::prev_permutation(bitstring.begin(), bitstring.end()));
   }

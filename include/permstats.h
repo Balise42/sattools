@@ -5,6 +5,7 @@
 #include <map>
 #include <vector>
 #include <set>
+#include <boost/thread.hpp>
 #include "structs.h"
 #include "cnfclause.h"
 #include "ppzrunstats.h"
@@ -15,6 +16,7 @@ class PermStats : public PpzRunStats {
     std::map<Assignment, std::set<std::vector<int> > > permsets;
     CNFClause statsclause;
     unsigned int variable;
+    boost::mutex mutex_assig;
 
   public:
     /** default constructor */
