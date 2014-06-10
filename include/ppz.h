@@ -10,6 +10,8 @@
 #include "structs.h"
 #include "ppzrunstats.h"
 
+#define PPZ_NB_THREADS 2
+
 /** This is a derandomized PPZ algorithm, and by derandomized I mean it goes through
     ALL the permutations of the variables and through ALL the 0/1 bits when they are
     not forced. Hence this is a VERY inefficient algorithm (worst case O(n!2^n) on 

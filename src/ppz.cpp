@@ -56,10 +56,23 @@ void Ppz::full_solve_ppz(PpzRunStats & stats, bool oracle){
     permutation[i] = i;
   }
 
-  do{
-    boost::thread thr1(&Ppz::execute_permutation, this, permutation, oracle, &stats);
-    thr1.join();
-  } while(std::next_permutation(permutation.begin(), permutation.end()));
+  bool cont = true;
+  while(1){
+    boost::thread thr[PPZ_NB_THREADS];
+    for(int i = 0; i<PPZ_NB_THREADS; i++){
+      thr[i] = boost::thread(&Ppz::execute_permutation, this, permutation, oracle, &stats);
+      if(!std::next_permutation(permutation.begin(), permutation.end())){
+        cont = false;
+        break;
+      }
+    }
+    for(int i = 0; i<PPZ_NB_THREADS; i++){
+      thr[i].join();
+    }
+    if(!cont){
+      break;
+    }
+  }
 }
 
 void Ppz::execute_permutation(const std::vector<int> & permutation, bool oracle, PpzRunStats * stats){
