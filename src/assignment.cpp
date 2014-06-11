@@ -13,6 +13,9 @@ short Assignment::operator[] (const int nIndex) const{
     return assignment[nIndex];
 }
 
+void Assignment::clear(){
+  assignment.clear();
+}
 
 Assignment::Assignment():assignment(std::vector<short>(0)){
 }

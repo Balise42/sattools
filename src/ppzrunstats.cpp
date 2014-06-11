@@ -37,6 +37,9 @@ void PpzRunStats::record_failure(unsigned int forced){
 void PpzRunStats::add_perm_to_assg(Assignment & assg, const std::vector<int> & perm){
 }
 
+void PpzRunStats::set_nf_to_perm(Assignment & assg,bool nf){
+}
+
 std::ostream & operator<<(std::ostream & out, const PpzRunStats & s){
   out << "Total # of tries: " << s.all_cases << std::endl;
   out << "# of working tries: " << s.satisfying_cases << std::endl;

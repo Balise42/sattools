@@ -32,7 +32,7 @@ class Ppz{
      @param randombits a string of bits for "guessing" variables if they are not forced
      @param oracle whether the oracle is on or not 
      @return assignment a satisfying assignment or an empty vector if the run fails */
-    Assignment execute_bitstring(const std::vector<int> & permutation, const std::vector<short> & randombits, unsigned int & forced, bool oracle);
+    Assignment execute_bitstring(const std::vector<int> & permutation, const std::vector<short> & randombits, unsigned int & forced, bool & nf, int trackedvar, bool oracle);
 
     void execute_permutation(const std::vector<int> & permutation, bool oracle, PpzRunStats * stats);
   public:

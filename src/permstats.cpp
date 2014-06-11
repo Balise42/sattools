@@ -20,6 +20,16 @@ void PermStats::add_perm_to_assg(Assignment & assg, const std::vector<int> & per
   permsets[assg].insert(perm);
 }
 
+void PermStats::set_nf_to_perm(Assignment & assg, bool nf){
+  boost::lock_guard<boost::mutex> guard(mutex_nf);
+  if(numnf.count(assg) == 0){
+    numnf[assg] = 0;
+  }
+  if(nf){
+    numnf[assg]++;
+  }
+}
+
 unsigned int PermStats::get_stats_lit_clause(const Assignment & assg) const {
   int total = 0;
   if(permsets.count(assg) == 0){
@@ -44,6 +54,10 @@ unsigned int PermStats::get_stats_lit_clause(const Assignment & assg) const {
   return total;
 }
 
+unsigned int PermStats::get_variable(){
+  return variable;
+}
+
 std::ostream & operator<<(std::ostream & out, const PermStats & stats){
   out << * (dynamic_cast<const PpzRunStats * >(&stats));
   for(const auto & el : stats.permsets){
@@ -51,14 +65,9 @@ std::ostream & operator<<(std::ostream & out, const PermStats & stats){
       out << lit;
     }
     out << ":\n";
-    for(const auto & perm : el.second){
-      for(const auto & var : perm){
-        out << var+1;
-      }
-      out << std::endl;
-    }
     std::vector<int> spec(3);
     out << "Stats for var " << stats.variable << " in clause " << stats.statsclause << ": " << stats.get_stats_lit_clause(el.first) << " / " << el.second.size() << std::endl;
+    out << "Var " << stats.variable << "is non-frozen in " << stats.numnf.at(el.first) << " / " << el.second.size() << "permutations" << std::endl;
 
     out << std::endl;
   }
