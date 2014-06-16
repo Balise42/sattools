@@ -61,13 +61,16 @@ std::ostream& operator<<(std::ostream& out, const SolvedCNF & formula){
 
 bool SolvedCNF::is_frozen(int variable, Assignment partial) const{
   std::vector<Assignment> assignments(0);
-  // bruteforce solves to check if a variable is frozen. quite ugly,
-  // but since PPZ is incredibly slow anyway...
-  bruteforce_solve_sat(assignments,partial);
-  //if there is no satisfying assignment, the variable has the same value in all sat. assg.
-  if(assignments.size() == 0){
+  for(auto const & assig : satisfying_assignments){
+    if(assig.is_compatible(partial)){
+      assignments.push_back(assig);
+    }
+  }
+  //if there is zero or one satisfying assignment, the variable has the same value in all sat. assg.
+  if(assignments.size() <= 1){
     return true;
   }
+  //otherwise we check whether the variable has the same value in all compatible assignments
   short value = assignments[0][variable];
   for(auto const & assig : assignments){
     if(assig[variable] != value){

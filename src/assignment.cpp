@@ -1,6 +1,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <algorithm>
 
 #include "assignment.h"
 #include "userinputexception.h"
@@ -15,6 +16,19 @@ short Assignment::operator[] (const int nIndex) const{
 
 void Assignment::clear(){
   assignment.clear();
+}
+
+bool Assignment::is_compatible(const Assignment & partial) const{
+  int maxsize = std::max(partial.size(), size());
+  for(int i = 0; i<maxsize; i++){
+    if(partial[i] == -1){
+      continue;
+    }
+    if(partial[i] != assignment[i]){
+      return false;
+    }
+  }
+  return true;
 }
 
 Assignment::Assignment():assignment(std::vector<short>(0)){

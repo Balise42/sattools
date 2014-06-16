@@ -14,6 +14,7 @@ class Assignment {
     Assignment(int n);
     Assignment(std::vector<short> assignment);
     void set_assignment(std::string s);
+    bool is_compatible(const Assignment & partial) const;
     void clear();
     short& operator[] (const int nIndex);
     short operator [] (const int index) const; 
