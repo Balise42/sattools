@@ -21,6 +21,7 @@ class Assignment {
     friend std::ostream& operator<<(std::ostream& out, const Assignment & as);
     friend std::istream& operator>>(std::istream & in, Assignment & as);
     friend bool operator<(const Assignment & lhs, const Assignment & rhs);
+    friend bool operator==(const Assignment & lhs, const Assignment & rhs);
 
     typedef std::vector<short>::iterator iterator;
     typedef std::vector<short>::const_iterator const_iterator;

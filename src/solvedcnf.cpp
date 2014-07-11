@@ -10,8 +10,14 @@ SolvedCNF::SolvedCNF(const CNFFormula & f):f(new CNFFormula(f)),satisfying_assig
   bruteforce_solve_sat(satisfying_assignments);
 }
 
+SolvedCNF::SolvedCNF(const SolvedCNF & f):f(new CNFFormula(*(f.f))),satisfying_assignments(f.satisfying_assignments){
+
+}
+
 SolvedCNF::~SolvedCNF(){
-  delete f;
+  if(f){
+    delete f;
+  }
 }
 
 void SolvedCNF::bruteforce_solve_sat(std::vector<Assignment> & assignments, Assignment partial) const {

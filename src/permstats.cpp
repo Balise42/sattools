@@ -64,6 +64,13 @@ std::ostream & operator<<(std::ostream & out, const PermStats & stats){
     for(const auto & lit : el.first){
       out << lit;
     }
+    out << std::endl;
+    for(const auto & perm : el.second){
+      for(const auto & lit : perm){
+         out << lit+1;
+      }
+      out << std::endl;
+    }
     out << ":\n";
     std::vector<int> spec(3);
     out << "Stats for var " << stats.variable << " in clause " << stats.statsclause << ": " << stats.get_stats_lit_clause(el.first) << " / " << el.second.size() << std::endl;

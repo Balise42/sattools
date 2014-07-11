@@ -22,7 +22,7 @@ class CNFFormula{
 
     /** creates a CNF formula with the given clauses and assignments, with default empty clause vector */
     CNFFormula(unsigned int n, int k, const std::vector<CNFClause> & clauses = std::vector<CNFClause>(0));
-
+    
     /** does the assignment passed in parameter, does not modify the current formula 
     @param assg the assignment to make - 0 or 1 to corresponding variables, -1 for unassigned variables
     @return a new CNFFormula with the assignment made */

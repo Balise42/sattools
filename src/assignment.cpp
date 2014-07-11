@@ -95,3 +95,7 @@ std::istream &operator>>(std::istream &in, Assignment & as){
 bool operator< (const Assignment & lhs, const Assignment & rhs){
   return (lhs.assignment < rhs.assignment);
 }
+
+bool operator==(const Assignment & lhs, const Assignment & rhs){
+  return (lhs.assignment == rhs.assignment);
+}

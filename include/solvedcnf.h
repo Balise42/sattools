@@ -19,6 +19,7 @@ class SolvedCNF{
 
   public:
     SolvedCNF(const CNFFormula & f);
+    SolvedCNF(const SolvedCNF & f);
     ~SolvedCNF();
     friend std::ostream& operator<<(std::ostream& out, const SolvedCNF & formula);
 
