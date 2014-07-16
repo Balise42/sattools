@@ -40,7 +40,8 @@ Options for "sattools"
   * commandline.cpp: command line parsing and dispatching
   * interactivemode.cpp: tiny console for formula creation and runs
 * Basic structures
-  * structs.h: small data structures that do not need any methods attached to them (namely, literals and assignments)
+  * structs.h: small data structures that do not need any methods attached to them (namely, literals)
+  * assignment.cpp: an assignment to a CNF formula
   * cnfclause.cpp: a CNF clause (disjunction of literals)
   * cnfformula.cpp: a CNF formula.
   * solvedcnf.cpp: a solved CNF formula (by bruteforce) - also allows checking for frozen variables.
@@ -58,3 +59,4 @@ Options for "sattools"
 * Miscellaneous tests and temporary executables
   * cnfclause_test.cpp, cnfformula_test.cpp: unit tests for cnfclause and cnfformula
   * dimacs_tool.cpp, generate_sat_tool.cpp,ppz_random_tool.cpp,ppz_tool.cpp: miscellaneous temporary executables used in previous versions instead of the generic "sattools" executable.
+  * examples/satstats.cpp, examples/satstats2.cpp, examples/smallcover.cpp: miscellaneous "almost one-shot" bits of code that use the underlying structures of sattools to test some hypotheses. 
