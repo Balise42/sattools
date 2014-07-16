@@ -2,16 +2,18 @@ CPP=clang++
 INCLUDEDIR=./include
 SRCDIR=./src
 BUILDDIR=./build
+EXAMPLEDIR=examples
 CPPFLAGS=-Wall -W -Wextra -std=c++11 -ggdb -I$(INCLUDEDIR)
-TARGETS=$(addprefix tests/,generate_sat_tool ppz_tool ppz_random_tool dimacs_tool) sattools satstats satstats2 smallcover
+TARGETS=$(addprefix tests/,generate_sat_tool ppz_tool ppz_random_tool dimacs_tool) sattools 
+EXAMPLES=$(addprefix examples/, satstats satstats2 smallcover)
 GENERATE_OBJECTS=$(addprefix $(BUILDDIR)/,cnfclause.o cnfformula.o generate_sat_tool.o satgenerator.o maxsatgenerator.o solvedcnf.o assignment.o)
 PPZ_OBJECTS=$(addprefix $(BUILDDIR)/,cnfclause.o cnfformula.o satgenerator.o ppz.o ppz_tool.o maxsatgenerator.o ppzrunstats.o solvedcnf.o permstats.o assignment.o)
 PPZ_RANDOM_OBJECTS=$(addprefix $(BUILDDIR)/,cnfclause.o cnfformula.o satgenerator.o ppz.o randomsatgenerator.o ppz_random_tool.o ppzrunstats.o solvedcnf.o permstats.o assignment.o)
 DIMACS_OBJECTS=$(addprefix $(BUILDDIR)/,cnfclause.o cnfformula.o satgenerator.o dimacsgenerator.o dimacs_tool.o solvedcnf.o assignment.o)
 SATTOOLS_OBJECTS=$(addprefix $(BUILDDIR)/,cnfclause.o cnfformula.o satgenerator.o dimacsgenerator.o sattools.o ppz.o randomsatgenerator.o maxsatgenerator.o ppzrunstats.o commandline.o interactivemode.o formulacreationmenu.o userinput.o executionmenu.o solvedcnf.o permstats.o assignment.o)
-SATSTATS_OBJECTS=$(addprefix $(BUILDDIR)/,cnfclause.o cnfformula.o satgenerator.o ppz.o maxsatgenerator.o ppzrunstats.o assignment.o solvedcnf.o satstats.o permstats.o)
-SATSTATS2_OBJECTS=$(addprefix $(BUILDDIR)/,cnfclause.o cnfformula.o satgenerator.o ppz.o maxsatgenerator.o ppzrunstats.o assignment.o solvedcnf.o satstats2.o permstats.o)
-SMALLCOVER_OBJECTS=$(addprefix $(BUILDDIR)/,cnfclause.o cnfformula.o assignment.o solvedcnf.o smallcover.o)
+SATSTATS_OBJECTS=$(addprefix $(BUILDDIR)/,cnfclause.o cnfformula.o satgenerator.o ppz.o maxsatgenerator.o ppzrunstats.o assignment.o solvedcnf.o $(EXAMPLEDIR)/satstats.o permstats.o)
+SATSTATS2_OBJECTS=$(addprefix $(BUILDDIR)/,cnfclause.o cnfformula.o satgenerator.o ppz.o maxsatgenerator.o ppzrunstats.o assignment.o solvedcnf.o $(EXAMPLEDIR)/satstats2.o permstats.o)
+SMALLCOVER_OBJECTS=$(addprefix $(BUILDDIR)/,cnfclause.o cnfformula.o assignment.o solvedcnf.o $(EXAMPLEDIR)/smallcover.o)
 OBJS=$(GENERATE_OBJECTS) $(PPZ_OBJECTS) $(DIMACS_OBJECTS) $(SATTOOLS_OBJECTS)
 LIBS=-lboost_program_options -lboost_thread -lboost_system
 # Points to the root of Google Test, relative to where this file is.
@@ -21,9 +23,12 @@ GTEST_CPPFLAGS += -I$(GTEST_DIR)/include
 TESTS = tests/cnfclause_test tests/cnfformula_test
 GTEST_HEADERS = /usr/include/gtest/*.h /usr/include/gtest/internal/*.h
 
-all: $(TARGETS) $(TESTS)
+all: $(TARGETS) $(TESTS) $(EXAMPLES)
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.cpp
+	$(CPP) $(CPPFLAGS) -c $< -o $@
+
+$(BUILDDIR)/$(EXAMPLEDIR)/%.o: $(SRCDIR)/$(EXAMPLEDIR)/%.cpp
 	$(CPP) $(CPPFLAGS) -c $< -o $@
 
 tests/generate_sat_tool: $(GENERATE_OBJECTS)
@@ -41,17 +46,17 @@ tests/dimacs_tool: $(DIMACS_OBJECTS)
 sattools: $(SATTOOLS_OBJECTS)
 	$(CPP) $(CPPFLAGS) $(SATTOOLS_OBJECTS) -o $@ $(LIBS)
 
-satstats: $(SATSTATS_OBJECTS)
+examples/satstats: $(SATSTATS_OBJECTS)
 	$(CPP) $(CPPFLAGS) $(SATSTATS_OBJECTS) -o $@ $(LIBS) 
 
-satstats2: $(SATSTATS2_OBJECTS)
+examples/satstats2: $(SATSTATS2_OBJECTS)
 	$(CPP) $(CPPFLAGS) $(SATSTATS2_OBJECTS) -o $@ $(LIBS) 
 
-smallcover: $(SMALLCOVER_OBJECTS)
+examples/smallcover: $(SMALLCOVER_OBJECTS)
 	$(CPP) $(CPPFLAGS) $(SMALLCOVER_OBJECTS) -o $@ $(LIBS)
 
 clean:
-	-rm -f $(OBJS) $(TARGETS)
+	-rm -f $(OBJS) $(TARGETS) $(TESTS) $(EXAMPLES)
 
 # Builds gtest.a and gtest_main.a.
 

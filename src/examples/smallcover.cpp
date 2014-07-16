@@ -7,31 +7,33 @@
 #include "assignment.h"
 #include "structs.h"
 
+const unsigned int NUMVARS = 4;
+
 int main(){
   std::vector<SolvedCNF> chains;
-  std::vector<unsigned int> chaindef(4);
-  for(int i = 0; i<4; i++){
+  std::vector<unsigned int> chaindef(NUMVARS);
+  for(unsigned int i = 0; i<NUMVARS; i++){
     chaindef[i] = i;
   }
   do {
-    std::vector<unsigned int> pattern(4, 0);
-    for(int i = 0; i<=4; i++){
-      for(int j = 0; j<i; j++){
+    std::vector<unsigned int> pattern(NUMVARS, 0);
+    for(unsigned int i = 0; i<=NUMVARS; i++){
+      for(unsigned int j = 0; j<i; j++){
         pattern[j] = 1;
       }
       do{
-        CNFFormula f(4,2);
-        std::vector<literal> lits(4);
-        for(int j = 0; j<4; j++){
+        CNFFormula f(NUMVARS,2);
+        std::vector<literal> lits(NUMVARS);
+        for(unsigned int j = 0; j<NUMVARS; j++){
           literal l;
           l.variable = chaindef[j];
           l.value = pattern[j];
           lits[j] = l;
         }
-        for(int j = 0; j<3; j++){
+        for(unsigned int j = 0; j<NUMVARS; j++){
           CNFClause c;
           c.add_literal(lits[j]);
-          c.add_literal(lits[j+1]);
+          c.add_literal(lits[(j+1)%NUMVARS]);
           f.add_clause(c);
         }
         SolvedCNF solf(f);
@@ -41,9 +43,9 @@ int main(){
   } while(std::next_permutation(chaindef.begin(), chaindef.end()));
 
   std::vector<Assignment> all_assig;
-  for(int i = 0; i<=4; i++){
-    std::vector<short> assigvec(4, 0);
-    for(int j = 0; j<i; j++){
+  for(unsigned int i = 0; i<=NUMVARS; i++){
+    std::vector<short> assigvec(NUMVARS, 0);
+    for(unsigned int j = 0; j<i; j++){
       assigvec[j] = 1;
     }
     do{
@@ -51,15 +53,15 @@ int main(){
     } while(std::prev_permutation(assigvec.begin(), assigvec.end()));
   }
 
-  int num = 0;
-  for(int i = 0; i<=all_assig.size(); i++){
+  for(unsigned int i = 0; i<=all_assig.size(); i++){
+    std::cout << "i = " << i << std::endl;
     std::vector<short> covercandidatechoice(all_assig.size(), 0);
-    for(int j = 0; j<i; j++){
+    for(unsigned int j = 0; j<i; j++){
       covercandidatechoice[j] = 1;
     }
     do{
       std::vector<Assignment> covercandidate;
-      for(int j = 0; j<all_assig.size(); j++){
+      for(unsigned int j = 0; j<all_assig.size(); j++){
         if(covercandidatechoice[j] == 1){
           covercandidate.push_back(all_assig[j]);
         }
